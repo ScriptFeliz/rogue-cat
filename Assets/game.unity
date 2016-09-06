@@ -145,7 +145,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 1
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -202,7 +202,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   column: 5
   rows: 5
-  floorTile: {fileID: 105664, guid: 733304082bd95f6428ad9a6b74ec55e6, type: 2}
+  floorTiles:
+  - {fileID: 105664, guid: 733304082bd95f6428ad9a6b74ec55e6, type: 2}
+  - {fileID: 168994, guid: b2ecef4475bee6344ba6dd2907182171, type: 2}
   tileSizeInUnits: {x: 1, y: 0.55, z: 0.5}
 --- !u!114 &1968877135
 MonoBehaviour:

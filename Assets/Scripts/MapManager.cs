@@ -6,7 +6,7 @@ public class MapManager : MonoBehaviour {
 
 	public int column = 20;
 	public int rows = 20;
-	public GameObject floorTile;
+	public GameObject[] floorTiles;
 	public Vector3 tileSizeInUnits = new Vector3(1.0f, 0.57f, 0.5f);
 	private List<GameObject> floor = new List<GameObject>();
 
@@ -22,15 +22,15 @@ public class MapManager : MonoBehaviour {
 		{
 			for (int x = 0; x < rows; x++)
 			{
-				GameObject instance = Instantiate(floorTile, Snap(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
+				GameObject instance = Instantiate(floorTiles[Random.Range(0, floorTiles.Length)], toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
 				floor.Add(instance);
 			}
 		}
 	}
 
-	Vector3 Snap(Vector3 localPosition)
+	Vector3 toIsometric(Vector3 localPosition)
 	{
-		float isoX = (localPosition.x - localPosition.y) * tileSizeInUnits.y;
+		float isoX = (localPosition.x - localPosition.y) * tileSizeInUnits.x / 2f;
 		float isoY = (localPosition.x + localPosition.y) * tileSizeInUnits.y / 2f;
 		return new Vector3(isoX, isoY, 1f);	
 	}

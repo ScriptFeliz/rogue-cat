@@ -17,10 +17,4 @@ public class GameManager : MonoBehaviour {
 		MapManager mapManager = GetComponent<MapManager>();
 		mapManager.MapSetup();
 	}
-
-	private void Update()
-	{
-		MapManager mapManager = GetComponent<MapManager>();
-		mapManager.MapSetup();
-	}
 }
