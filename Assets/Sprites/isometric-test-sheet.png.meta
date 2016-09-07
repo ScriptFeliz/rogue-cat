@@ -1,11 +1,12 @@
 fileFormatVersion: 2
 guid: 8bcc27323e4c822449bbca0b9ede95be
-timeCreated: 1473182823
+timeCreated: 1473216938
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: isometric-test-sheet_0
     21300002: isometric-test-sheet_1
+    21300004: isometric-test-sheet_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -62,7 +63,7 @@ TextureImporter:
         width: 260
         height: 167
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - serializedVersion: 2
@@ -70,6 +71,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 260
+        y: 0
+        width: 260
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: isometric-test-sheet_2
+      rect:
+        serializedVersion: 2
+        x: 520
         y: 0
         width: 260
         height: 167

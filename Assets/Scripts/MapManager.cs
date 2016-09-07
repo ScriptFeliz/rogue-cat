@@ -7,6 +7,7 @@ public class MapManager : MonoBehaviour {
 	public int column = 20;
 	public int rows = 20;
 	public GameObject[] floorTiles;
+	public GameObject wall;
 	public Vector3 tileSizeInUnits = new Vector3(1.0f, 0.57f, 0.5f);
 	private List<GameObject> floor = new List<GameObject>();
 	public float perlinOffset = 0.38f;
@@ -19,7 +20,6 @@ public class MapManager : MonoBehaviour {
 			Destroy(floor[i]);
 		}
 		floor.Clear();
-		Debug.Log("bonjour");
 		for (int y = 0;  y < column; y++)
 		{
 			for (int x = 0; x < rows; x++)
@@ -30,6 +30,11 @@ public class MapManager : MonoBehaviour {
 				if (p > perlinOffset)
 				{
 					GameObject instance = Instantiate(floorTiles[Random.Range(0, floorTiles.Length)], toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
+					floor.Add(instance);
+				}
+				else
+				{
+					GameObject instance = Instantiate(wall, toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
 					floor.Add(instance);
 				}
 			}
