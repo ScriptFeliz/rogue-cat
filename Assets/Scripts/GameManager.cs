@@ -4,6 +4,7 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null;
+	public uint level = 1;
 
 	private void Awake()
 	{
@@ -15,6 +16,16 @@ public class GameManager : MonoBehaviour {
 
 		DontDestroyOnLoad(gameObject);
 		MapManager mapManager = GetComponent<MapManager>();
-		mapManager.MapSetup();
+		mapManager.MapSetup(level);
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyDown("space"))
+		{
+			MapManager mapManager = GetComponent<MapManager>();
+			mapManager.MapSetup(level);
+		}
+			
 	}
 }
