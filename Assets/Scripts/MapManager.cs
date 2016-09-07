@@ -9,10 +9,12 @@ public class MapManager : MonoBehaviour {
 	public GameObject[] floorTiles;
 	public GameObject wall;
 	public Vector3 tileSizeInUnits = new Vector3(1.0f, 0.57f, 0.5f);
-	private List<GameObject> floor = new List<GameObject>();
 	public float perlinOffset = 0.38f;
 	[Range(0,1)]
 	public float perlinRange = 0.11f;
+
+	private List<GameObject> floor = new List<GameObject>();
+
 	public void MapSetup(uint level)
 	{
 		for (int i = 0; i < floor.Count; i++)
@@ -26,7 +28,6 @@ public class MapManager : MonoBehaviour {
 			{
 				float seed = (float)Network.time + 0.1f;
 				float p = Mathf.PerlinNoise((float)x * perlinRange + seed, (float)y * perlinRange + seed);
-				Debug.Log(p);
 				if (p > perlinOffset)
 				{
 					GameObject instance = Instantiate(floorTiles[Random.Range(0, floorTiles.Length)], toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;

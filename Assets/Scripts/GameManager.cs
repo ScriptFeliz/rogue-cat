@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null;
 	public uint level = 1;
+	public bool cameraFree = true;
 
 	private void Awake()
 	{
@@ -26,6 +27,5 @@ public class GameManager : MonoBehaviour {
 			MapManager mapManager = GetComponent<MapManager>();
 			mapManager.MapSetup(level);
 		}
-			
 	}
 }
