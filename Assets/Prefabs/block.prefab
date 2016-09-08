@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 447660}
   - 212: {fileID: 21287084}
   m_Layer: 8
-  m_Name: floor3
+  m_Name: block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,7 +55,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300004, guid: 8bcc27323e4c822449bbca0b9ede95be, type: 3}
+  m_Sprite: {fileID: 21300014, guid: 75b8f4983cd766448a8647e65b87c10e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -223,9 +223,10 @@ MonoBehaviour:
   - {fileID: 105664, guid: 733304082bd95f6428ad9a6b74ec55e6, type: 2}
   - {fileID: 168994, guid: b2ecef4475bee6344ba6dd2907182171, type: 2}
   wall: {fileID: 107038, guid: 8780dd1022063c94cbdb53fcfdd2b242, type: 2}
-  tileSizeInUnits: {x: 1, y: 0.55, z: 0.5}
-  perlinOffset: 0.35
+  tileSizeInUnits: {x: 1, y: 0.64, z: 0.5}
+  perlinOffset: 0.42
   perlinRange: 0.1
+  closest: {fileID: 188666, guid: c1ffd40a058736146b6311b7511dcfb4, type: 2}
 --- !u!114 &1968877135
 MonoBehaviour:
   m_ObjectHideFlags: 0

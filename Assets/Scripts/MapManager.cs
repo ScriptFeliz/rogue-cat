@@ -2,19 +2,24 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class MapManager : MonoBehaviour {
+public class MapManager : MonoBehaviour
+{
 
 	public int column = 20;
 	public int rows = 20;
 	public GameObject[] floorTiles;
 	public GameObject wall;
 	public Vector3 tileSizeInUnits = new Vector3(1.0f, 0.57f, 0.5f);
+	[Range(0f, 0.5f)]
 	public float perlinOffset = 0.38f;
-	[Range(0,1)]
+	[Range(0, 1)]
 	public float perlinRange = 0.11f;
 
 	private GameObject[][] map = null;
 	private uint floor;
+
+	//debug
+	public GameObject closest;
 
 	public void MapSetup(uint level)
 	{
@@ -37,7 +42,7 @@ public class MapManager : MonoBehaviour {
 			map[i] = new GameObject[rows];
 		}
 		// generate map with using perlin noise
-		for (int y = 0;  y < rows; y++)
+		for (int y = 0; y < rows; y++)
 		{
 			for (int x = 0; x < column; x++)
 			{
@@ -61,10 +66,29 @@ public class MapManager : MonoBehaviour {
 
 		if (floor < column * rows / 3f)
 			MapSetup(level);
+
+		connectIslands();
 	}
 
-	bool[,] visited;
-	int islandCount;
+	GameObject instance;
+	private void Update()
+	{
+		if (instance != null)
+			Destroy(instance);
+		Camera camera = Camera.main;
+
+		Vector3 mouse = Input.mousePosition;
+		mouse = camera.ScreenToWorldPoint(mouse);
+
+		mouse = toCartesian(mouse);
+		mouse.x = Mathf.Round(mouse.x);
+		mouse.y = Mathf.Round(mouse.y);
+		Vector3 pos = toIsometric(new Vector3(mouse.x, mouse.y, -1f));
+		instance = Instantiate(closest, pos, Quaternion.identity) as GameObject;
+	}
+
+	private bool[,] visited;
+	private int islandCount;
 	private List<List<GameObject>> islands;
 	private void removeSmallIslands()
 	{
@@ -75,26 +99,31 @@ public class MapManager : MonoBehaviour {
 		{
 			for (int y = 0; y < map[x].Length; ++y)
 			{
-				if (!visited[x,y] && map[x][y].layer == LayerMask.NameToLayer("Floor"))
+				if (!visited[x, y] && map[x][y].layer == LayerMask.NameToLayer("Floor"))
 				{
 					visit(x, y);
 					islandCount++;
 				}
 			}
 		}
-		Debug.Log("ISLAND COUNT: "+islandCount);
-		
+
 		for (int i = 0; i < islandCount; ++i)
 		{
-			Debug.Log(islands[i].Count + " : " + rows * column / 10);
 			if (islands[i].Count < (rows * column) / 10)
 			{
-				Debug.Log("ALO");
 				for (int a = 0; a < islands[i].Count; ++a)
+				{
+					Vector3 cartPos = toCartesian(islands[i][a].transform.position);
+					cartPos.x = Mathf.Round(cartPos.x);
+					cartPos.y = Mathf.Round(cartPos.y);
+					map[(int)cartPos.x][(int)cartPos.y] = Instantiate(wall, toIsometric(new Vector3(cartPos.x, cartPos.y, 0)), Quaternion.identity) as GameObject;
 					Destroy(islands[i][a]);
+				}
 				floor -= (uint)islands[i].Count;
+				islands.RemoveAt(i--);
+				--islandCount;
 			}
-		}	
+		}
 	}
 
 	private void visit(int x, int y)
@@ -115,10 +144,25 @@ public class MapManager : MonoBehaviour {
 		}
 	}
 
+	private void connectIslands()
+	{
+		for (int i = 0; i < islands.Count; ++i)
+		{
+
+		}
+	}
+
 	Vector3 toIsometric(Vector3 localPosition)
 	{
 		float isoX = (localPosition.x - localPosition.y) * tileSizeInUnits.x / 2f;
 		float isoY = (localPosition.x + localPosition.y) * tileSizeInUnits.y / 2f;
-		return new Vector3(isoX, isoY, 1f);
+		return new Vector3(isoX, isoY, isoY);
+	}
+
+	Vector3 toCartesian(Vector3 isoPosition)
+	{
+		float cartX = (isoPosition.x * (2 / tileSizeInUnits.x) + isoPosition.y * (2 / tileSizeInUnits.y)) / 2;
+		float cartY = isoPosition.y * (2 / tileSizeInUnits.y) - cartX;
+		return new Vector3(cartX, cartY, isoPosition.z);
 	}
 }

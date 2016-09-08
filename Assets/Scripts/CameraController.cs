@@ -11,6 +11,8 @@ public class CameraController : MonoBehaviour {
 	[Range(5f, 15f)]
 	public float maxZoom = 5f;
 
+	private int lastTouchCount = 0;
+
 	void Update () {
 		if (GameManager.instance.cameraFree == true)
 		{
@@ -24,10 +26,10 @@ public class CameraController : MonoBehaviour {
 				transform.Translate(vertical, horizontal, 0);
 			}
 			// finger move
-			if (Input.touchCount == 1)
+			if (Input.touchCount == 1 && lastTouchCount == 1)
 			{
-				float vertical = -Input.GetTouch(0).deltaPosition.x * speed / 4f * Time.deltaTime * camera.orthographicSize;
-				float horizontal = -Input.GetTouch(0).deltaPosition.y * speed / 4f * Time.deltaTime * camera.orthographicSize;
+				float vertical = -Input.GetTouch(0).deltaPosition.x * speed / 10f * Time.deltaTime * camera.orthographicSize;
+				float horizontal = -Input.GetTouch(0).deltaPosition.y * speed / 10f * Time.deltaTime * camera.orthographicSize;
 				transform.Translate(vertical, horizontal, 0);
 			}
 
@@ -50,6 +52,8 @@ public class CameraController : MonoBehaviour {
 
 				camera.orthographicSize = Mathf.Clamp(camera.orthographicSize + deltaMagnitudeDiff * pitchSpeed, minZoom, maxZoom);
 			}
+
+			lastTouchCount = Input.touchCount;
 		}
 	}
 }
