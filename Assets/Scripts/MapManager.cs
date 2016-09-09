@@ -41,6 +41,7 @@ public class MapManager : MonoBehaviour
 		{
 			map[i] = new GameObject[rows];
 		}
+
 		// generate map with using perlin noise
 		for (int y = 0; y < rows; y++)
 		{
@@ -51,7 +52,10 @@ public class MapManager : MonoBehaviour
 				float p = Mathf.PerlinNoise((float)x * perlinRange + seed, (float)y * perlinRange + seed);
 				if (p > perlinOffset)
 				{
-					instance = Instantiate(floorTiles[Random.Range(0, floorTiles.Length)], toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
+					int index = 1;
+					if (p < perlinOffset + perlinOffset / 1.6f)
+						index = 0;
+					instance = Instantiate(floorTiles[index], toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
 					++floor;
 				}
 				else
@@ -64,6 +68,7 @@ public class MapManager : MonoBehaviour
 
 		removeSmallIslands();
 
+		// if the map is too small, regenerate it
 		if (floor < column * rows / 3f)
 			MapSetup(level);
 
@@ -112,13 +117,7 @@ public class MapManager : MonoBehaviour
 			if (islands[i].Count < (rows * column) / 10)
 			{
 				for (int a = 0; a < islands[i].Count; ++a)
-				{
-					Vector3 cartPos = toCartesian(islands[i][a].transform.position);
-					cartPos.x = Mathf.Round(cartPos.x);
-					cartPos.y = Mathf.Round(cartPos.y);
-					map[(int)cartPos.x][(int)cartPos.y] = Instantiate(wall, toIsometric(new Vector3(cartPos.x, cartPos.y, 0)), Quaternion.identity) as GameObject;
-					Destroy(islands[i][a]);
-				}
+					replaceTile(wall, toCartesian(islands[i][a].transform.position));
 				floor -= (uint)islands[i].Count;
 				islands.RemoveAt(i--);
 				--islandCount;
@@ -146,10 +145,68 @@ public class MapManager : MonoBehaviour
 
 	private void connectIslands()
 	{
-		for (int i = 0; i < islands.Count; ++i)
+		for (int i = 0; i < islands.Count - 1; ++i)
 		{
-
+			for (int j = i + 1; j < islands.Count; ++j)
+			{
+				float min = float.MaxValue;
+				int firstIndex = 0;
+				int secondIndex = 0;
+				for (int a = 0; a < islands[i].Count; ++a)
+				{
+					for (int b = 0; b < islands[j].Count; ++b)
+					{
+						float distance = Vector3.Distance(islands[i][a].transform.position, islands[j][b].transform.position);
+						if (distance < min)
+						{
+							min = distance;
+							firstIndex = a;
+							secondIndex = b;
+						}
+					}
+				}
+				islands[i][firstIndex] = replaceTile(closest, toCartesian(islands[i][firstIndex].transform.position));
+				islands[j][secondIndex] = replaceTile(closest, toCartesian(islands[j][secondIndex].transform.position));
+				Vector3 start = toCartesian(islands[i][firstIndex].transform.position);
+				Vector3 end = toCartesian(islands[j][secondIndex].transform.position);
+				start.x = Mathf.Round(start.x);
+				start.y = Mathf.Round(start.y);
+				end.x = Mathf.Round(end.x);
+				end.y = Mathf.Round(end.y);
+				float yratio = (end.y - start.y) / (end.x - start.x);
+				float xmoves = 1f;
+				float ymoves = 1f;
+				while (start.x != end.x || start.y != end.y)
+				{
+					float xdir = Mathf.Clamp(end.x - start.x, -1f, 1f);
+					float ydir = Mathf.Clamp(end.y - start.y, -1f, 1f);
+					if (ydir != 0f && (xdir == 0f || ymoves / xmoves <= yratio))
+					{
+						start.y += ydir;
+						++ymoves;
+					}
+					else
+					{
+						start.x += xdir;
+						++xmoves;
+					}
+					if (start.x != end.x || start.y != end.y)
+					{
+						Destroy(map[(int)start.x][(int)start.y]);
+						map[(int)start.x][(int)start.y] = Instantiate(floorTiles[1], toIsometric(start), Quaternion.identity) as GameObject;
+					}
+				}
+			}
 		}
+	}
+
+	private GameObject replaceTile(GameObject instance, Vector3 cartesianPosition)
+	{
+		int x = (int)Mathf.Round(cartesianPosition.x);
+		int y = (int) Mathf.Round(cartesianPosition.y);
+		Destroy(map[x][y]);
+		map[x][y] = Instantiate(instance, toIsometric(new Vector3(x, y, 0f)), Quaternion.identity) as GameObject;
+		return map[x][y];
 	}
 
 	Vector3 toIsometric(Vector3 localPosition)
