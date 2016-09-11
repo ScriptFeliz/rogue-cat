@@ -184,11 +184,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 527ee963c4d9f734ba11ce7b2e2572fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 3
   scrollSpeed: 3
   pitchSpeed: 0.015
   minZoom: 1
-  maxZoom: 5
+  maxZoom: 15
 --- !u!1 &1968877133
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,6 +223,7 @@ MonoBehaviour:
   - {fileID: 105664, guid: 733304082bd95f6428ad9a6b74ec55e6, type: 2}
   - {fileID: 168994, guid: b2ecef4475bee6344ba6dd2907182171, type: 2}
   wall: {fileID: 107038, guid: 8780dd1022063c94cbdb53fcfdd2b242, type: 2}
+  spawn: {fileID: 199778, guid: f6045fac062f2594191c9a85264e6bc0, type: 2}
   tileSizeInUnits: {x: 1, y: 0.64, z: 0.5}
   perlinOffset: 0.42
   perlinRange: 0.1
