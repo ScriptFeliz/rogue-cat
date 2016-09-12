@@ -25,6 +25,11 @@ public class MapManager : MonoBehaviour
 	public void MapSetup(uint level)
 	{
 		floor = 0;
+		// remove debug pathfinding tiles
+		foreach (GameObject tile in tileBackup)
+		{
+			Destroy(tile);
+		}
 		// remove old map if there is any
 		if (map != null)
 		{
@@ -203,8 +208,6 @@ public class MapManager : MonoBehaviour
 						}
 					}
 				}
-				islands[i][firstIndex] = replaceTile(closest, toCartesian(islands[i][firstIndex].transform.position));
-				islands[j][secondIndex] = replaceTile(closest, toCartesian(islands[j][secondIndex].transform.position));
 				Vector3 start = toCartesian(islands[i][firstIndex].transform.position);
 				Vector3 end = toCartesian(islands[j][secondIndex].transform.position);
 				start.x = Mathf.Round(start.x);
@@ -249,35 +252,55 @@ public class MapManager : MonoBehaviour
 
 	class Node
 	{
-		public Vector3 Position { get; private set; }
-		public float G { get; private set; }
-		public float H { get; private set; }
-		public float F { get { return this.G + this.H; } }
-		public NodeState State;
+		public Vector3 position { get; private set; }
+		public float g { get; private set; }
+		public float h { get; private set; }
+		public float f { get { return this.g + this.h; } }
+		private NodeState s;
+		public NodeState state
+		{
+			get { return s; }
+			set
+			{
+				s = value;
+				if (value == NodeState.Open)
+					GameManager.instance.mapManager.openList.Add(this);
+				else if (value == NodeState.Closed)
+				{
+					List<Node> openList = GameManager.instance.mapManager.openList;
+					for (int i = 0; i < openList.Count; ++i)
+					{
+						if (openList[i].position == position)
+							openList.RemoveAt(i);
+					}
+				}
+			}
+		}
 		private Node parent;
-		public Node ParentNode
+		public Node parentNode
 		{
 			get { return parent; }
 			set
 			{
 				parent = value;
-				G = value.G + 1f;
+				g = value.g + 1f;
 			}
 		}
 
 		public Node(Vector3 position, Vector3 end)
 		{
-			this.Position = position;
-			H = Mathf.Abs(position.x - end.x) + Mathf.Abs(position.y - end.y);
-			State = NodeState.Untested;
+			this.position = position;
+			h = Mathf.Abs(position.x - end.x) + Mathf.Abs(position.y - end.y);
+			s = NodeState.Untested;
 		}
 	}
 	private enum NodeState { Untested, Open, Closed }
 
 	private Node[,] nodes;
 	private Node endNode;
+	private List<Node> openList;
 	// Find the shortest path between two cartesian coordinates.
-	// Return null if no path exists.
+	// Return an empty list if no path exists.
 	public List<Vector3> FindPath(Vector3 cartesianStart, Vector3 cartesianEnd)
 	{
 		List<Vector3> path = new List<Vector3>();
@@ -294,13 +317,15 @@ public class MapManager : MonoBehaviour
 		Node startNode = nodes[(int)cartesianStart.x, (int)cartesianStart.y];
 		endNode = nodes[(int)cartesianEnd.x, (int)cartesianEnd.y];
 
+		openList = new List<Node>();
+
 		if (search(startNode))
 		{
 			Node node = endNode;
-			while (node.ParentNode != null)
+			while (node.parentNode != null)
 			{
-				path.Add(node.Position);
-				node = node.ParentNode;
+				path.Add(node.position);
+				node = node.parentNode;
 			}
 			path.Reverse();
 		}
@@ -308,7 +333,7 @@ public class MapManager : MonoBehaviour
 	}
 
 	// Find the shortest path between two isometric coordinates.
-	// return null if no path exists.
+	// return an empty list if no path exists.
 	public List<Vector3> FindIsoPath(Vector3 isoStart, Vector3 isoEnd)
 	{
 		List<Vector3> path = FindPath(toCartesian(isoStart), toCartesian(isoEnd));
@@ -319,19 +344,19 @@ public class MapManager : MonoBehaviour
 
 	private bool search(Node current)
 	{
-		current.State = NodeState.Closed;
-		List<Node> neighbors = getNeighbors(current);
-		neighbors.Sort((first, second) => first.F.CompareTo(second.F));
-
-		foreach (Node neighbor in neighbors)
+		while (current  != null)
 		{
-			if (neighbor.Position.x == endNode.Position.x && neighbor.Position.y == endNode.Position.y)
-				return true;
-		}
+			current.state = NodeState.Closed;
+			List<Node> neighbors = getNeighbors(current);
 
-		Node lowest = lowestFInOpenList();
-		if (lowest != null)
-			return search(lowest);
+			foreach (Node neighbor in neighbors)
+			{
+				if (neighbor.position == endNode.position)
+					return true;
+			}
+
+			current = lowestFInOpenList();
+		}
 
 		return false;
 	}
@@ -339,32 +364,35 @@ public class MapManager : MonoBehaviour
 	private Node lowestFInOpenList()
 	{
 		float lowest = float.MaxValue;
-		Node node = null;
-		for (int x = 0; x < column; ++x)
+		List<Node> lowestNodeList = new List<Node>();
+
+		foreach (Node node in openList)
 		{
-			for (int y = 0; y < rows; ++y)
+			if (node.g < lowest)
 			{
-				if (nodes[x,y].G < lowest && nodes[x,y].State == NodeState.Open)
-				{
-					node = nodes[x, y];
-					lowest = node.G;
-				}
+				lowestNodeList = new List<Node>();
+				lowestNodeList.Add(node);
+				lowest = node.g;
 			}
+			else if (node.g == lowest)
+				lowestNodeList.Add(node);
 		}
-		return node;
+
+		if (lowestNodeList.Count == 0)
+			return null;
+		else
+			return lowestNodeList[Random.Range(0, lowestNodeList.Count)];
 	}
 
 	private List<Node> getNeighbors(Node from)
 	{
 		List<Node> neighbors = new List<Node>();
 		Vector3[] locations = new Vector3[] {
-			new Vector3(from.Position.x - 1f, from.Position.y),
-			new Vector3(from.Position.x, from.Position.y - 1f),
-			new Vector3(from.Position.x + 1f, from.Position.y),
-			new Vector3(from.Position.x, from.Position.y + 1f)
+			new Vector3(from.position.x - 1f, from.position.y),
+			new Vector3(from.position.x, from.position.y - 1f),
+			new Vector3(from.position.x + 1f, from.position.y),
+			new Vector3(from.position.x, from.position.y + 1f)
 		};
-
-
 
 		foreach (Vector3 location in locations)
 		{
@@ -377,21 +405,21 @@ public class MapManager : MonoBehaviour
 				continue;
 
 			Node node = nodes[x, y];
-			if (node.State == NodeState.Closed)
+			if (node.state == NodeState.Closed)
 				continue;
-			else if (node.State == NodeState.Open)
+			else if (node.state == NodeState.Open)
 			{
-				float gTemp = from.G + 1f;
-				if (gTemp < node.G)
+				float gTemp = from.g + 1f;
+				if (gTemp < node.g)
 				{
-					node.ParentNode = from;
+					node.parentNode = from;
 					neighbors.Add(node);
 				}
 			}
 			else
 			{
-				node.ParentNode = from;
-				node.State = NodeState.Open;
+				node.parentNode = from;
+				node.state = NodeState.Open;
 				neighbors.Add(node);
 			}
 		}

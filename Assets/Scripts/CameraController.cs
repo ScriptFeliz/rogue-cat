@@ -3,7 +3,6 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
 
-	public float speed = 2f;
 	public float scrollSpeed = 1f;
 	public float pitchSpeed = 0.1f;
 	[Range(0.1f, 5f)]
@@ -13,24 +12,31 @@ public class CameraController : MonoBehaviour {
 
 	private int lastTouchCount = 0;
 
+	private Vector3 dragOrigin;
 	void Update () {
 		if (GameManager.instance.cameraFree == true)
 		{
 			Camera camera = GetComponent<Camera>();
 
 			// mouse move
-			if (Input.GetMouseButton(0))
+			if (Input.GetMouseButtonDown(0))
+				dragOrigin = camera.ScreenToWorldPoint(Input.mousePosition);
+			else if (Input.GetMouseButton(0))
 			{
-				float vertical = -Input.GetAxis("Mouse X") * speed * Time.deltaTime * camera.orthographicSize;
-				float horizontal = -Input.GetAxis("Mouse Y") * speed * Time.deltaTime * camera.orthographicSize;
-				transform.Translate(vertical, horizontal, 0);
+				Vector3 pos = camera.ScreenToWorldPoint(Input.mousePosition);
+				Vector3 move = dragOrigin - pos;
+				transform.Translate(move);
+				dragOrigin = camera.ScreenToWorldPoint(Input.mousePosition);
 			}
 			// finger move
-			if (Input.touchCount == 1 && lastTouchCount == 1)
+			if (Input.touchCount == 1 && lastTouchCount == 0)
+				dragOrigin = camera.ScreenToWorldPoint(Input.GetTouch(0).position);
+			else if (Input.touchCount == 1 && lastTouchCount == 1)
 			{
-				float vertical = -Input.GetTouch(0).deltaPosition.x * speed / 10f * Time.deltaTime * camera.orthographicSize;
-				float horizontal = -Input.GetTouch(0).deltaPosition.y * speed / 10f * Time.deltaTime * camera.orthographicSize;
-				transform.Translate(vertical, horizontal, 0);
+				Vector3 pos = camera.ScreenToWorldPoint(Input.GetTouch(0).position);
+				Vector3 move = dragOrigin - pos;
+				transform.Translate(move);
+				dragOrigin = camera.ScreenToWorldPoint(Input.GetTouch(0).position);
 			}
 
 			// scroll zoom

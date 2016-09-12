@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance = null;
 	public uint level = 1;
 	public bool cameraFree = true;
+	[System.NonSerialized]
+	public MapManager mapManager;
 
 	private void Awake()
 	{
@@ -15,16 +17,13 @@ public class GameManager : MonoBehaviour {
 			Destroy(this);
 
 		DontDestroyOnLoad(gameObject);
-		MapManager mapManager = GetComponent<MapManager>();
+		mapManager = GetComponent<MapManager>();
 		mapManager.MapSetup(level);
 	}
 
 	private void Update()
 	{
 		if (Input.GetKeyDown("space"))
-		{
-			MapManager mapManager = GetComponent<MapManager>();
 			mapManager.MapSetup(level);
-		}
 	}
 }

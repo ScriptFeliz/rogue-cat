@@ -184,7 +184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 527ee963c4d9f734ba11ce7b2e2572fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
   scrollSpeed: 3
   pitchSpeed: 0.015
   minZoom: 1
@@ -217,8 +216,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01e8288ca1312246b572be341fba7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  column: 32
-  rows: 24
+  column: 20
+  rows: 20
   floorTiles:
   - {fileID: 105664, guid: 733304082bd95f6428ad9a6b74ec55e6, type: 2}
   - {fileID: 168994, guid: b2ecef4475bee6344ba6dd2907182171, type: 2}
