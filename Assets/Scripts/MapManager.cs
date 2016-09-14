@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,6 +9,7 @@ public class MapManager : MonoBehaviour
 	public int column = 20;
 	public int rows = 20;
 	public GameObject[] floorTiles;
+	public TileMap[] tilemaps;
 	public GameObject wall;
 	public GameObject spawn;
 	public Vector3 tileSizeInUnits = new Vector3(1.0f, 0.57f, 0.5f);
@@ -58,10 +60,18 @@ public class MapManager : MonoBehaviour
 				float p = Mathf.PerlinNoise((float)x * perlinRange + seed, (float)y * perlinRange + seed);
 				if (p > perlinOffset)
 				{
-					int index = 1;
-					if (p < perlinOffset + perlinOffset / 1.6f)
+					int index = 0;
+					for (int i = 0; i < tilemaps.Length; ++i)
+					{
+						if (p < perlinOffset + perlinOffset / (tilemaps.Length - i))
+						{
+							index = i;
+							break;
+						}
+					}
+					if (p < perlinOffset + perlinOffset / 2f)
 						index = 0;
-					instance = Instantiate(floorTiles[index], toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
+					instance = Instantiate(tilemaps[index].GetTile(UnityEngine.Random.Range(0f, 100f)), toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
 					++floor;
 				}
 				else
@@ -253,9 +263,9 @@ public class MapManager : MonoBehaviour
 	class Node
 	{
 		public Vector3 position { get; private set; }
-		public float g { get; private set; }
-		public float h { get; private set; }
-		public float f { get { return this.g + this.h; } }
+		public float g { get; private set; } // cost from startNode to this node
+		public float h { get; private set; } // estimated cost from endNode to this node
+		public float f { get { return this.g + this.h; } } // sum of g and h
 		private NodeState s;
 		public NodeState state
 		{
@@ -299,7 +309,7 @@ public class MapManager : MonoBehaviour
 	private Node[,] nodes;
 	private Node endNode;
 	private List<Node> openList;
-	// Find the shortest path between two cartesian coordinates.
+	// Find the shortest path between two cartesian coordinates using A* algorithm.
 	// Return an empty list if no path exists.
 	public List<Vector3> FindPath(Vector3 cartesianStart, Vector3 cartesianEnd)
 	{
@@ -332,7 +342,7 @@ public class MapManager : MonoBehaviour
 		return path;
 	}
 
-	// Find the shortest path between two isometric coordinates.
+	// Find the shortest path between two isometric coordinates using A* algorithm.
 	// return an empty list if no path exists.
 	public List<Vector3> FindIsoPath(Vector3 isoStart, Vector3 isoEnd)
 	{
@@ -381,7 +391,7 @@ public class MapManager : MonoBehaviour
 		if (lowestNodeList.Count == 0)
 			return null;
 		else
-			return lowestNodeList[Random.Range(0, lowestNodeList.Count)];
+			return lowestNodeList[0];
 	}
 
 	private List<Node> getNeighbors(Node from)
@@ -436,8 +446,11 @@ public class MapManager : MonoBehaviour
 
 	Vector3 toCartesian(Vector3 isoPosition)
 	{
-		float cartX = (isoPosition.x * (2 / tileSizeInUnits.x) + isoPosition.y * (2 / tileSizeInUnits.y)) / 2;
-		float cartY = isoPosition.y * (2 / tileSizeInUnits.y) - cartX;
+		isoPosition.x = (float)Math.Round(isoPosition.x, 2);
+		isoPosition.y = (float)Math.Round(isoPosition.y, 2);
+		float cartX = (isoPosition.x * (2f / tileSizeInUnits.x) + isoPosition.y * (2f / tileSizeInUnits.y));
+		cartX = cartX == 0f ? 0f : cartX / 2f;
+		float cartY = isoPosition.y * (2f / tileSizeInUnits.y) - cartX;
 		return new Vector3(cartX, cartY, isoPosition.z);
 	}
 }

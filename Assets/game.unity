@@ -221,6 +221,21 @@ MonoBehaviour:
   floorTiles:
   - {fileID: 105664, guid: 733304082bd95f6428ad9a6b74ec55e6, type: 2}
   - {fileID: 168994, guid: b2ecef4475bee6344ba6dd2907182171, type: 2}
+  tilemaps:
+  - BaseTile: {fileID: 105664, guid: 733304082bd95f6428ad9a6b74ec55e6, type: 2}
+    _baseTileChance: 90
+    secondaryTiles:
+    - tile: {fileID: 154526, guid: b7adbb9ebcf1f704b87dca09efcff181, type: 2}
+      _chance: 5
+    - tile: {fileID: 105614, guid: bab5eb50680bea44f88b9504b806591d, type: 2}
+      _chance: 5
+  - BaseTile: {fileID: 168994, guid: b2ecef4475bee6344ba6dd2907182171, type: 2}
+    _baseTileChance: 90
+    secondaryTiles:
+    - tile: {fileID: 125146, guid: cfbafcb43b3aace48b81bdb3bdde8abe, type: 2}
+      _chance: 5
+    - tile: {fileID: 196894, guid: 6d64a9af41440b544a1ba29cbf5cea2e, type: 2}
+      _chance: 5
   wall: {fileID: 107038, guid: 8780dd1022063c94cbdb53fcfdd2b242, type: 2}
   spawn: {fileID: 199778, guid: f6045fac062f2594191c9a85264e6bc0, type: 2}
   tileSizeInUnits: {x: 1, y: 0.64, z: 0.5}
