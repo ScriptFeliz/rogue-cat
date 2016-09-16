@@ -12,7 +12,7 @@ public class MapManager : MonoBehaviour
 	public TileMap[] tilemaps;
 	public GameObject wall;
 	public GameObject spawn;
-	public Vector3 tileSizeInUnits = new Vector3(1.0f, 0.57f, 0.5f);
+	public static Vector3 tileSizeInUnits = new Vector3(1.0f, 0.7f, 0.5f);
 	[Range(0f, 0.5f)]
 	public float perlinOffset = 0.38f;
 	[Range(0, 1)]
@@ -71,12 +71,12 @@ public class MapManager : MonoBehaviour
 					}
 					if (p < perlinOffset + perlinOffset / 2f)
 						index = 0;
-					instance = Instantiate(tilemaps[index].GetTile(UnityEngine.Random.Range(0f, 100f)), toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
+					instance = Instantiate(tilemaps[index].GetTile(UnityEngine.Random.Range(0f, 100f)), ToIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
 					++floor;
 				}
 				else
 				{
-					instance = Instantiate(wall, toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
+					instance = Instantiate(wall, ToIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
 				}
 				map[x][y] = instance;
 			}
@@ -99,7 +99,7 @@ public class MapManager : MonoBehaviour
 				if (map[x][y].layer == LayerMask.NameToLayer("Floor"))
 				{
 					Destroy(map[x][y]);
-					map[x][y] = Instantiate(spawn, toIsometric(new Vector3(x, y, 0f)), Quaternion.identity) as GameObject;
+					map[x][y] = Instantiate(spawn, ToIsometric(new Vector3(x, y, 0f)), Quaternion.identity) as GameObject;
 					found = true;
 					spawn = map[x][y];
 					break;
@@ -123,17 +123,17 @@ public class MapManager : MonoBehaviour
 		Vector3 mouse = Input.mousePosition;
 		mouse = camera.ScreenToWorldPoint(mouse);
 
-		mouse = toCartesian(mouse);
+		mouse = ToCartesian(mouse);
 		mouse.x = Mathf.Round(mouse.x);
 		mouse.y = Mathf.Round(mouse.y);
-		Vector3 pos = toIsometric(new Vector3(mouse.x, mouse.y, -1f));
+		Vector3 pos = ToIsometric(new Vector3(mouse.x, mouse.y, -1f));
 		instance = Instantiate(closest, pos, Quaternion.identity) as GameObject;
 
 		// debug path finding
 
 		if (Input.GetMouseButtonDown(0))
 		{
-			path = FindPath(toCartesian(spawn.transform.position), mouse);
+			path = FindPath(ToCartesian(spawn.transform.position), mouse);
 			if (path.Count > 0)
 			{
 				for (int i = 0; i < tileBackup.Count; ++i)
@@ -141,7 +141,7 @@ public class MapManager : MonoBehaviour
 				tileBackup = new List<GameObject>();
 			}
 			for (int i = 0; i < path.Count; ++i)
-				tileBackup.Add(Instantiate(closest, toIsometric(path[i]), Quaternion.identity) as GameObject);
+				tileBackup.Add(Instantiate(closest, ToIsometric(path[i]), Quaternion.identity) as GameObject);
 		}
 	}
 
@@ -170,7 +170,7 @@ public class MapManager : MonoBehaviour
 			if (islands[i].Count < (rows * column) / 10)
 			{
 				for (int a = 0; a < islands[i].Count; ++a)
-					replaceTile(wall, toCartesian(islands[i][a].transform.position));
+					replaceTile(wall, ToCartesian(islands[i][a].transform.position));
 				floor -= (uint)islands[i].Count;
 				islands.RemoveAt(i--);
 				--islandCount;
@@ -218,8 +218,8 @@ public class MapManager : MonoBehaviour
 						}
 					}
 				}
-				Vector3 start = toCartesian(islands[i][firstIndex].transform.position);
-				Vector3 end = toCartesian(islands[j][secondIndex].transform.position);
+				Vector3 start = ToCartesian(islands[i][firstIndex].transform.position);
+				Vector3 end = ToCartesian(islands[j][secondIndex].transform.position);
 				start.x = Mathf.Round(start.x);
 				start.y = Mathf.Round(start.y);
 				end.x = Mathf.Round(end.x);
@@ -244,7 +244,7 @@ public class MapManager : MonoBehaviour
 					if (start.x != end.x || start.y != end.y)
 					{
 						Destroy(map[(int)start.x][(int)start.y]);
-						map[(int)start.x][(int)start.y] = Instantiate(floorTiles[1], toIsometric(start), Quaternion.identity) as GameObject;
+						map[(int)start.x][(int)start.y] = Instantiate(floorTiles[1], ToIsometric(start), Quaternion.identity) as GameObject;
 					}
 				}
 			}
@@ -256,7 +256,7 @@ public class MapManager : MonoBehaviour
 		int x = (int)Mathf.Round(cartesianPosition.x);
 		int y = (int) Mathf.Round(cartesianPosition.y);
 		Destroy(map[x][y]);
-		map[x][y] = Instantiate(instance, toIsometric(new Vector3(x, y, 0f)), Quaternion.identity) as GameObject;
+		map[x][y] = Instantiate(instance, ToIsometric(new Vector3(x, y, 0f)), Quaternion.identity) as GameObject;
 		return map[x][y];
 	}
 
@@ -346,9 +346,9 @@ public class MapManager : MonoBehaviour
 	// return an empty list if no path exists.
 	public List<Vector3> FindIsoPath(Vector3 isoStart, Vector3 isoEnd)
 	{
-		List<Vector3> path = FindPath(toCartesian(isoStart), toCartesian(isoEnd));
+		List<Vector3> path = FindPath(ToCartesian(isoStart), ToCartesian(isoEnd));
 		for (int i = 0; i < path.Count; ++i)
-			path[i] = toIsometric(path[i]);
+			path[i] = ToIsometric(path[i]);
 		return path;
 	}
 
@@ -437,14 +437,14 @@ public class MapManager : MonoBehaviour
 		return neighbors;
 	}
 
-	Vector3 toIsometric(Vector3 localPosition)
+	public static Vector3 ToIsometric(Vector3 localPosition)
 	{
 		float isoX = (localPosition.x - localPosition.y) * tileSizeInUnits.x / 2f;
 		float isoY = (localPosition.x + localPosition.y) * tileSizeInUnits.y / 2f;
 		return new Vector3(isoX, isoY, isoY);
 	}
 
-	Vector3 toCartesian(Vector3 isoPosition)
+	public static Vector3 ToCartesian(Vector3 isoPosition)
 	{
 		isoPosition.x = (float)Math.Round(isoPosition.x, 2);
 		isoPosition.y = (float)Math.Round(isoPosition.y, 2);
