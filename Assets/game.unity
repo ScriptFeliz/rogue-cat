@@ -13,7 +13,7 @@ SceneSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 6
+  serializedVersion: 7
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -37,12 +37,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 6
+  serializedVersion: 7
   m_GIWorkflowMode: 1
-  m_LightmapsMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -53,17 +53,22 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 3
+    serializedVersion: 4
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
     m_TextureHeight: 1024
+    m_AO: 0
     m_AOMaxDistance: 1
-    m_Padding: 2
     m_CompAOExponent: 0
+    m_CompAOExponentDirect: 0
+    m_Padding: 2
     m_LightmapParameters: {fileID: 0}
+    m_LightmapsBakeMode: 1
     m_TextureCompression: 1
+    m_DirectLightInLightProbes: 1
     m_FinalGather: 0
+    m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
   m_LightingDataAsset: {fileID: 0}
@@ -85,6 +90,61 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &846838016
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000011970773152, guid: 277ba5d020f1c3b469f3015e87998943, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -1.5684371
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011970773152, guid: 277ba5d020f1c3b469f3015e87998943, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 9.003035
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011970773152, guid: 277ba5d020f1c3b469f3015e87998943, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011970773152, guid: 277ba5d020f1c3b469f3015e87998943, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011970773152, guid: 277ba5d020f1c3b469f3015e87998943, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011970773152, guid: 277ba5d020f1c3b469f3015e87998943, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011970773152, guid: 277ba5d020f1c3b469f3015e87998943, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011970773152, guid: 277ba5d020f1c3b469f3015e87998943, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011970773152, guid: 277ba5d020f1c3b469f3015e87998943, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011970773152, guid: 277ba5d020f1c3b469f3015e87998943, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013149759764, guid: 277ba5d020f1c3b469f3015e87998943,
+        type: 2}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 277ba5d020f1c3b469f3015e87998943, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1434311369
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,32 +276,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01e8288ca1312246b572be341fba7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  column: 20
-  rows: 20
+  column: 64
+  rows: 64
   floorTiles:
-  - {fileID: 105664, guid: 733304082bd95f6428ad9a6b74ec55e6, type: 2}
-  - {fileID: 168994, guid: b2ecef4475bee6344ba6dd2907182171, type: 2}
+  - {fileID: 1000011853018518, guid: 2dc21903ae0d4a540a5c19cf71a82a24, type: 2}
+  - {fileID: 1000011853018518, guid: 2dc21903ae0d4a540a5c19cf71a82a24, type: 2}
   tilemaps:
-  - BaseTile: {fileID: 105664, guid: 733304082bd95f6428ad9a6b74ec55e6, type: 2}
+  - BaseTile: {fileID: 1000014173061584, guid: e5cea5aee6c1ffe4eb73b67db16e59cd, type: 2}
     _baseTileChance: 90
     secondaryTiles:
-    - tile: {fileID: 154526, guid: b7adbb9ebcf1f704b87dca09efcff181, type: 2}
+    - tile: {fileID: 1000011744027468, guid: 10d0a5b2c5be7264aa37bf27f8a1f75e, type: 2}
       _chance: 5
-    - tile: {fileID: 105614, guid: bab5eb50680bea44f88b9504b806591d, type: 2}
+    - tile: {fileID: 1000011651963206, guid: 89e56a6fa6e6f2440b558d99a82e4f55, type: 2}
       _chance: 5
-  - BaseTile: {fileID: 168994, guid: b2ecef4475bee6344ba6dd2907182171, type: 2}
-    _baseTileChance: 90
+  - BaseTile: {fileID: 1000011853018518, guid: 2dc21903ae0d4a540a5c19cf71a82a24, type: 2}
+    _baseTileChance: 99
     secondaryTiles:
-    - tile: {fileID: 125146, guid: cfbafcb43b3aace48b81bdb3bdde8abe, type: 2}
-      _chance: 5
-    - tile: {fileID: 196894, guid: 6d64a9af41440b544a1ba29cbf5cea2e, type: 2}
-      _chance: 5
-  wall: {fileID: 107038, guid: 8780dd1022063c94cbdb53fcfdd2b242, type: 2}
-  spawn: {fileID: 199778, guid: f6045fac062f2594191c9a85264e6bc0, type: 2}
-  tileSizeInUnits: {x: 1, y: 0.64, z: 0.5}
+    - tile: {fileID: 1000010497927118, guid: 36c8eaf23c797f14191710847e4ae06d, type: 2}
+      _chance: 1
+  wall: {fileID: 1000011405868172, guid: b0ed921d1c08e26488b95b996ad038b3, type: 2}
+  spawn: {fileID: 1000011024540752, guid: cb32ca75870d10d479d8743e44146930, type: 2}
   perlinOffset: 0.42
   perlinRange: 0.1
-  closest: {fileID: 188666, guid: c1ffd40a058736146b6311b7511dcfb4, type: 2}
+  closest: {fileID: 1000011024540752, guid: cb32ca75870d10d479d8743e44146930, type: 2}
 --- !u!114 &1968877135
 MonoBehaviour:
   m_ObjectHideFlags: 0
