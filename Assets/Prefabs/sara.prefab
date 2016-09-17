@@ -20,11 +20,11 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011970773152}
   - 212: {fileID: 212000011012039652}
-  - 114: {fileID: 114000013149759764}
   - 95: {fileID: 95000012578415698}
+  - 114: {fileID: 114000012042845926}
   m_Layer: 0
   m_Name: sara
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,7 +59,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114000013149759764
+--- !u!114 &114000012042845926
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -67,11 +67,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012699038874}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f8fcb312024d6b4c85dbcaaa8dd71a4, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bb1f0da6d2b7b14990dcd7facd6bd44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PersoMove: {fileID: 0}
-  speed: 0.8
+  zIndex: 0.25
+  health: 100
+  damage: 12
+  speed: 5.9
+  moving: 0
 --- !u!212 &212000011012039652
 SpriteRenderer:
   m_ObjectHideFlags: 1
