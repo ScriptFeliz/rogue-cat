@@ -239,7 +239,10 @@ MonoBehaviour:
     secondaryTiles:
     - tile: {fileID: 1000010497927118, guid: 36c8eaf23c797f14191710847e4ae06d, type: 2}
       _chance: 1
-  wall: {fileID: 1000011405868172, guid: b0ed921d1c08e26488b95b996ad038b3, type: 2}
+  walls:
+  - {fileID: 1000010937983892, guid: 5890a1ebcc1c74f41bec201fbaecc14c, type: 2}
+  - {fileID: 1000011405868172, guid: b0ed921d1c08e26488b95b996ad038b3, type: 2}
+  - {fileID: 1000011680041318, guid: 9312dbd451ebbbc419647c9e5b8f4406, type: 2}
   spawn: {fileID: 1000011024540752, guid: cb32ca75870d10d479d8743e44146930, type: 2}
   perlinOffset: 0.42
   perlinRange: 0.1

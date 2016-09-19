@@ -13,6 +13,7 @@ public class Player : MovingUnit {
     {
         Camera camera = Camera.main;
 
+        GameManager.instance.mapManager.litMap(this.position);
 	    if (Input.GetMouseButtonDown(0))
         {
             if (path != null)

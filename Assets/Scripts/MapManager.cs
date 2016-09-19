@@ -10,18 +10,53 @@ public class MapManager : MonoBehaviour
 	public int rows = 20;
 	public GameObject[] floorTiles;
 	public TileMap[] tilemaps;
-	public GameObject wall;
-	public GameObject spawn;
+	public GameObject[] walls;
+    public GameObject spawn;
 	[Range(0f, 0.5f)]
 	public float perlinOffset = 0.38f;
 	[Range(0, 1)]
 	public float perlinRange = 0.11f;
+    public int viewDistance = 5;
 
 	private GameObject[][] map = null;
 	private uint floor;
 
-	//debug
+    //debug
+    public bool fogOfWar = true;
 	public GameObject closest;
+
+    private bool[][] litMapVisited;
+    public void litMap(Vector3 position)
+    {
+        if (!fogOfWar)
+            return;
+
+        int x = (int)position.x;
+        int y = (int)position.y;
+
+        if (!litMapVisited[x][y])
+        {
+            for (int i = 0; i < column; ++i)
+            {
+                for (int j = 0; j < rows; ++j)
+                {
+                    Vector3 cartPos = Utils.toCartesian(map[i][j].transform.position);
+                    int xx = (int)Mathf.Round(cartPos.x);
+                    int yy = (int)Mathf.Round(cartPos.y);
+                        SpriteRenderer renderer = map[xx][yy].GetComponent<SpriteRenderer>();
+                    float distance = (cartPos - position).magnitude;
+                    if (distance <= viewDistance)
+                    {
+                        renderer.material.color = Color.white;
+                    }
+                    else if (distance <= viewDistance + 2)
+                    {
+                        renderer.material.color = Color.gray;
+                    }
+                }
+            }
+        }
+    }
 
 	public void MapSetup(uint level)
 	{
@@ -44,9 +79,11 @@ public class MapManager : MonoBehaviour
 		}
 		// allocate map array
 		map = new GameObject[column][];
+        litMapVisited = new bool[column][];
 		for (int i = 0; i < column; ++i)
 		{
 			map[i] = new GameObject[rows];
+            litMapVisited[i] = new bool[rows];
 		}
 
 		// generate map with using perlin noise
@@ -75,7 +112,7 @@ public class MapManager : MonoBehaviour
 				}
 				else
 				{
-					instance = Instantiate(wall, Utils.toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
+					instance = Instantiate(walls[0], Utils.toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
 				}
 				map[x][y] = instance;
 			}
@@ -89,13 +126,13 @@ public class MapManager : MonoBehaviour
 
 		connectIslands();
 
-		// Setup spawn
+        // Setup spawn and buildings
 		bool found = false;
 		for (int x = 0; x < map.Length; ++x)
 		{
 			for (int y = 0; y < map[x].Length; ++y)
 			{
-				if (map[x][y].layer == LayerMask.NameToLayer("Floor"))
+				if (!found && map[x][y].layer == LayerMask.NameToLayer("Floor"))
 				{
 					Destroy(map[x][y]);
 					map[x][y] = Instantiate(spawn, Utils.toIsometric(new Vector3(x, y, 0f)), Quaternion.identity) as GameObject;
@@ -103,11 +140,54 @@ public class MapManager : MonoBehaviour
 					spawn = map[x][y];
 					break;
 				}
+                else if (isWall(x,y))
+                {
+                    if (isWall(x-1,y-1))
+                    {
+                        Vector3 newPos = map[x][y].transform.position;
+                        newPos.z = map[x-1][y-1].transform.position.z - 0.01f;
+                        map[x][y].transform.position = newPos;
+                    }
+                }
 			}
-			if (found)
-				break;
 		}
+
+        // Update walls sprite
+        for (int x = 0; x < map.Length; ++x)
+        {
+            for (int y = 0; y < map[x].Length; ++y)
+            {
+                GameObject newTile = null;
+                if (isWall(x,y) && isWall(x-2,y-2))
+                {
+                    if (map[x][y].transform.position.z > map[x - 1][y].transform.position.z && map[x][y].transform.position.z > map[x][y - 1].transform.position.z)
+                    {
+                        if ((!isWall(x, y - 1) || map[x][y - 1].name != walls[1].name + "(Clone)") && (!isWall(x, y + 1) || map[x][y].transform.position.z < map[x][y + 1].transform.position.z))
+                            newTile = walls[1];
+                        else if ((!isWall(x - 1, y) || map[x - 1][y].name != walls[2].name + "(Clone)") && (!isWall(x + 1, y) || map[x][y].transform.position.z < map[x + 1][y].transform.position.z))
+                            newTile = walls[2];
+                    }
+                    if (newTile != null)
+                    {
+                        Destroy(map[x][y]);
+                        map[x][y] = Instantiate(newTile, map[x][y].transform.position, Quaternion.identity) as GameObject;
+                    }
+                }
+                if (fogOfWar)
+                {
+                    SpriteRenderer renderer = map[x][y].GetComponent<SpriteRenderer>();
+                    renderer.material.color = Color.black;
+                }
+            }
+        }
 	}
+
+    private bool isWall(int x, int y)
+    {
+        if (x < 0 || x >= column || y < 0 || y >= rows)
+            return false;
+        return map[x][y].layer == LayerMask.NameToLayer("BlockingLayer");
+    }
 
 	GameObject instance;
 	List<Vector3> path;
@@ -171,7 +251,7 @@ public class MapManager : MonoBehaviour
 			if (islands[i].Count < (rows * column) / 10)
 			{
 				for (int a = 0; a < islands[i].Count; ++a)
-					replaceTile(wall, Utils.toCartesian(islands[i][a].transform.position));
+					replaceTile(walls[0], Utils.toCartesian(islands[i][a].transform.position));
 				floor -= (uint)islands[i].Count;
 				islands.RemoveAt(i--);
 				--islandCount;
