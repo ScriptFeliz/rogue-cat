@@ -1,21 +1,24 @@
 fileFormatVersion: 2
-guid: ac8eaf7fbbbf800418c0ccb47cc45bba
-timeCreated: 1474249173
+guid: 8b42a506b1919de42a301ac56222632c
+timeCreated: 1474332928
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: spriteblock3_0
-    21300002: spriteblock3_1
-    21300004: spriteblock3_2
-    21300006: spriteblock3_3
-    21300008: spriteblock3_4
-    21300010: spriteblock3_5
-    21300012: spriteblock3_6
-    21300014: spriteblock3_7
-    21300016: spriteblock3_8
-    21300018: spriteblock3_9
-    21300020: spriteblock3_10
-    21300022: spriteblock3_11
+    21300000: map_0
+    21300002: map_1
+    21300004: map_2
+    21300006: map_3
+    21300008: map_4
+    21300010: map_5
+    21300012: map_10
+    21300014: map_11
+    21300016: map_12
+    21300018: map_13
+    21300020: map_14
+    21300022: map_6
+    21300024: map_7
+    21300026: map_8
+    21300028: map_9
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -56,7 +59,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 240
+  spritePixelsToUnits: 505
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
@@ -65,158 +68,197 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: spriteblock3_0
+      name: map_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 512
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 1556
+        width: 522
+        height: 778
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spriteblock3_1
+      name: map_1
       rect:
         serializedVersion: 2
-        x: 512
-        y: 512
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 522
+        y: 1556
+        width: 522
+        height: 778
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spriteblock3_2
+      name: map_2
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 512
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1044
+        y: 1556
+        width: 522
+        height: 778
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spriteblock3_3
+      name: map_3
       rect:
         serializedVersion: 2
-        x: 1536
-        y: 512
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1566
+        y: 1556
+        width: 522
+        height: 778
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spriteblock3_4
+      name: map_4
       rect:
         serializedVersion: 2
-        x: 2048
-        y: 512
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2088
+        y: 1556
+        width: 522
+        height: 778
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spriteblock3_5
+      name: map_5
       rect:
         serializedVersion: 2
-        x: 2560
-        y: 512
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 778
+        width: 522
+        height: 778
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spriteblock3_6
+      name: map_6
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 778
+        width: 522
+        height: 778
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: map_7
+      rect:
+        serializedVersion: 2
+        x: 1044
+        y: 778
+        width: 522
+        height: 778
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: map_8
+      rect:
+        serializedVersion: 2
+        x: 1566
+        y: 778
+        width: 522
+        height: 778
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: map_9
+      rect:
+        serializedVersion: 2
+        x: 2088
+        y: 778
+        width: 522
+        height: 778
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: map_10
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: spriteblock3_7
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 512
-        height: 512
+        width: 522
+        height: 778
       alignment: 9
-      pivot: {x: 0.5, y: 0.35}
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spriteblock3_8
+      name: map_11
       rect:
         serializedVersion: 2
-        x: 1024
+        x: 522
         y: 0
-        width: 512
-        height: 512
+        width: 522
+        height: 778
       alignment: 9
-      pivot: {x: 0.5, y: 0.35}
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spriteblock3_9
+      name: map_12
       rect:
         serializedVersion: 2
-        x: 1536
+        x: 1044
         y: 0
-        width: 512
-        height: 512
+        width: 522
+        height: 778
       alignment: 9
-      pivot: {x: 0.5, y: 0.35}
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spriteblock3_10
+      name: map_13
       rect:
         serializedVersion: 2
-        x: 2048
+        x: 1566
         y: 0
-        width: 512
-        height: 512
+        width: 522
+        height: 778
       alignment: 9
-      pivot: {x: 0.5, y: 0.35}
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spriteblock3_11
+      name: map_14
       rect:
         serializedVersion: 2
-        x: 2560
+        x: 2088
         y: 0
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 522
+        height: 778
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
