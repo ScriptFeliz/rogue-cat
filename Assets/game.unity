@@ -192,7 +192,7 @@ MonoBehaviour:
   scrollSpeed: 3
   pitchSpeed: 0.015
   minZoom: 1
-  maxZoom: 15
+  maxZoom: 6
 --- !u!1 &1968877133
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,24 +228,36 @@ MonoBehaviour:
   - {fileID: 1000011853018518, guid: 2dc21903ae0d4a540a5c19cf71a82a24, type: 2}
   tilemaps:
   - BaseTile: {fileID: 1000014173061584, guid: e5cea5aee6c1ffe4eb73b67db16e59cd, type: 2}
-    _baseTileChance: 90
+    _baseTileChance: 86
     secondaryTiles:
     - tile: {fileID: 1000011744027468, guid: 10d0a5b2c5be7264aa37bf27f8a1f75e, type: 2}
       _chance: 5
     - tile: {fileID: 1000011651963206, guid: 89e56a6fa6e6f2440b558d99a82e4f55, type: 2}
       _chance: 5
+    - tile: {fileID: 1000011352417540, guid: bd25864501b80bb4cbf5abb56922633f, type: 2}
+      _chance: 2
+    - tile: {fileID: 1000011530359512, guid: cef2c095257e44647a97e66a7c84ace8, type: 2}
+      _chance: 2
   - BaseTile: {fileID: 1000011853018518, guid: 2dc21903ae0d4a540a5c19cf71a82a24, type: 2}
-    _baseTileChance: 99
+    _baseTileChance: 91
     secondaryTiles:
     - tile: {fileID: 1000010497927118, guid: 36c8eaf23c797f14191710847e4ae06d, type: 2}
-      _chance: 1
+      _chance: 3
+    - tile: {fileID: 1000011498717894, guid: 15ee8827865b2bf4dab77d0fcbe6fbe3, type: 2}
+      _chance: 2
+    - tile: {fileID: 1000012111815540, guid: 5cd652ebbd3e92943b4b909d56d4402c, type: 2}
+      _chance: 2
+    - tile: {fileID: 1000011300618314, guid: 1ada32d7069ce6f4abe3a636ab42f170, type: 2}
+      _chance: 2
   walls:
+  - {fileID: 1000014023375990, guid: 7d06cf76586c10946930508120040afb, type: 2}
+  - {fileID: 1000010035194216, guid: 7e60709c61872b04abf14d86c58298b4, type: 2}
   - {fileID: 1000010937983892, guid: 5890a1ebcc1c74f41bec201fbaecc14c, type: 2}
-  - {fileID: 1000011405868172, guid: b0ed921d1c08e26488b95b996ad038b3, type: 2}
-  - {fileID: 1000011680041318, guid: 9312dbd451ebbbc419647c9e5b8f4406, type: 2}
-  spawn: {fileID: 1000011024540752, guid: cb32ca75870d10d479d8743e44146930, type: 2}
+  spawn: {fileID: 1000010497927118, guid: 36c8eaf23c797f14191710847e4ae06d, type: 2}
   perlinOffset: 0.42
   perlinRange: 0.1
+  viewDistance: 5
+  fogOfWar: 1
   closest: {fileID: 1000011024540752, guid: cb32ca75870d10d479d8743e44146930, type: 2}
 --- !u!114 &1968877135
 MonoBehaviour:
