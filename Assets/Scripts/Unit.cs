@@ -1,22 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Unit : MonoBehaviour {
+public abstract class Unit : MonoBehaviour {
+
+    protected UnitFactoryType unitType;
 
     public float zIndex;
-    public int health;
-    public int damage;
-    public Vector3 position
+    public int _health;
+    public int _damage;
+
+    private Cart pos;
+    public Cart position { get { return pos; } set { pos = value; transform.position = pos.toIsometric(); } }
+
+    protected void unitInitialize (UnitFactoryType type, Cart startPos, int health, int damage)
     {
-        get
-        {
-            return Utils.toCartesian(this.transform.position);
-        }
-        set
-        {
-            Vector3 isoPos = Utils.toIsometric(value);
-            isoPos.z -= zIndex;
-            this.transform.position = isoPos;
-        }
+        unitType = type;
+
+        GameManager.instance.mapManager.map[startPos.x][startPos.y].isTaken = true;
+        GameManager.instance.mapManager.map[startPos.x][startPos.y].unitType = unitType;
+        GameManager.instance.mapManager.map[startPos.x][startPos.y].unit = gameObject;
+
+        position = startPos;
+
+        _health = health;
+        _damage = damage;
     }
 }

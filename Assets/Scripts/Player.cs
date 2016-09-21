@@ -4,37 +4,42 @@ using System.Collections.Generic;
 
 public class Player : MovingUnit {
 
-    public void init ()
+    public void initialize(Cart startPos, int health, int damage, float speed)
     {
-        this.transform.position = GameManager.instance.mapManager.spawn.transform.position;
+        base.movingUnitInitialize(UnitFactoryType.Player, startPos, health, damage, speed);
     }
 
-	void Update ()
+	override protected void Update ()
     {
         Camera camera = Camera.main;
 
-        GameManager.instance.mapManager.litMap(this.position);
+        GameManager.instance.mapManager.litMap(position);
 	    if (Input.GetMouseButtonDown(0))
         {
-            if (path != null)
-                path = null;
-            else
-            {
-                Vector3 dest = Utils.toCartesian(camera.ScreenToWorldPoint(Input.mousePosition));
-                dest = Utils.roundVector3(dest);
-                initMove(dest);
-            }
+            Cart dest = Utils.toCartesian(camera.ScreenToWorldPoint(Input.mousePosition));
+            computePath(dest);
+            GameManager.instance.turnLeft = path.Count;
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log("Stop Enemies");
+            GameManager.instance.enemySkipMove();
+        }
+
+        base.Update();
 	}
 
-    public override bool attemptMove()
+    override public bool attemptMove()
     {
-        if (path != null)
+        GameObject unit;
+        bool canMove = move(out unit);
+        if (!canMove && unit != null)
         {
-            Vector3 nextMove = path[0];
-            // Check items an stuffs
-            StartCoroutine(move());
+            if (unit.transform.tag == "Finish")
+            {
+                GameManager.instance.win();
+            }
         }
-        return true;
+        return canMove;
     }
 }

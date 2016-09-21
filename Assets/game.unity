@@ -224,8 +224,8 @@ MonoBehaviour:
   column: 64
   rows: 64
   floorTiles:
-  - {fileID: 1000011853018518, guid: 2dc21903ae0d4a540a5c19cf71a82a24, type: 2}
-  - {fileID: 1000011853018518, guid: 2dc21903ae0d4a540a5c19cf71a82a24, type: 2}
+  - {fileID: 1000014173061584, guid: e5cea5aee6c1ffe4eb73b67db16e59cd, type: 2}
+  - {fileID: 1000014173061584, guid: e5cea5aee6c1ffe4eb73b67db16e59cd, type: 2}
   tilemaps:
   - BaseTile: {fileID: 1000014173061584, guid: e5cea5aee6c1ffe4eb73b67db16e59cd, type: 2}
     _baseTileChance: 86
@@ -270,10 +270,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b37404aedd3065448e6afbd6151f78d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1000012699038874, guid: 277ba5d020f1c3b469f3015e87998943,
-    type: 2}
   level: 1
   cameraFree: 1
+  playerPrefab: {fileID: 1000012699038874, guid: 277ba5d020f1c3b469f3015e87998943,
+    type: 2}
+  enemyPrefab: {fileID: 1000013632809182, guid: 1dd5118d944c1224d984e372870a6d16,
+    type: 2}
+  exitPrefab: {fileID: 1000011911414560, guid: 9d65320e898a30e40baa775684f0fac5, type: 2}
+  player: {fileID: 0}
+  enemyList: []
+  turnLeft: 0
+  speed: 5
 --- !u!4 &1968877136
 Transform:
   m_ObjectHideFlags: 0

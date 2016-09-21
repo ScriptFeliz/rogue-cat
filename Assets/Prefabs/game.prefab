@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1000012355729340}
+  m_IsPrefabParent: 1
+--- !u!1 &1000012355729340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000013851854736}
+  - 114: {fileID: 114000010916943240}
+  - 114: {fileID: 114000012189028934}
+  m_Layer: 0
+  m_Name: game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4000013851854736
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012355729340}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.1057252, y: -1.9500604, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &114000010916943240
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012355729340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b37404aedd3065448e6afbd6151f78d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 1000012699038874, guid: 277ba5d020f1c3b469f3015e87998943,
+    type: 2}
+  enemyPrefab: {fileID: 1000013632809182, guid: 1dd5118d944c1224d984e372870a6d16,
+    type: 2}
+  level: 1
+  cameraFree: 1
+  playerScript: {fileID: 0}
+--- !u!114 &114000012189028934
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012355729340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f01e8288ca1312246b572be341fba7dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  column: 64
+  rows: 64
+  floorTiles:
+  - {fileID: 1000011853018518, guid: 2dc21903ae0d4a540a5c19cf71a82a24, type: 2}
+  - {fileID: 1000011853018518, guid: 2dc21903ae0d4a540a5c19cf71a82a24, type: 2}
+  tilemaps:
+  - BaseTile: {fileID: 1000014173061584, guid: e5cea5aee6c1ffe4eb73b67db16e59cd, type: 2}
+    _baseTileChance: 90
+    secondaryTiles:
+    - tile: {fileID: 1000011744027468, guid: 10d0a5b2c5be7264aa37bf27f8a1f75e, type: 2}
+      _chance: 5
+    - tile: {fileID: 1000011651963206, guid: 89e56a6fa6e6f2440b558d99a82e4f55, type: 2}
+      _chance: 5
+  - BaseTile: {fileID: 1000011853018518, guid: 2dc21903ae0d4a540a5c19cf71a82a24, type: 2}
+    _baseTileChance: 99
+    secondaryTiles:
+    - tile: {fileID: 1000010497927118, guid: 36c8eaf23c797f14191710847e4ae06d, type: 2}
+      _chance: 1
+  wall: {fileID: 1000011405868172, guid: b0ed921d1c08e26488b95b996ad038b3, type: 2}
+  perlinOffset: 0.42
+  perlinRange: 0.1
+  closest: {fileID: 1000011024540752, guid: cb32ca75870d10d479d8743e44146930, type: 2}

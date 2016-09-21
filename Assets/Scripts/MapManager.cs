@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public class MapManager : MonoBehaviour
 {
-
 	public int column = 20;
 	public int rows = 20;
 	public GameObject[] floorTiles;
@@ -18,33 +17,34 @@ public class MapManager : MonoBehaviour
 	public float perlinRange = 0.11f;
     public int viewDistance = 5;
 
-	private GameObject[][] map = null;
+	public Cube[][] map = null;
 	private uint floor;
 
     //debug
     public bool fogOfWar = true;
 	public GameObject closest;
 
-    private bool[][] litMapVisited;
-    public void litMap(Vector3 position)
+    public void litMap(Cart position)
     {
+        if (position == null)
+            return;
         if (!fogOfWar)
             return;
 
-        int x = (int)position.x;
-        int y = (int)position.y;
+        int x = position.x;
+        int y = position.y;
 
-        if (!litMapVisited[x][y])
+        if (!map[x][y].litVisited)
         {
             for (int i = 0; i < column; ++i)
             {
                 for (int j = 0; j < rows; ++j)
                 {
-                    Vector3 cartPos = Utils.toCartesian(map[i][j].transform.position);
-                    int xx = (int)Mathf.Round(cartPos.x);
-                    int yy = (int)Mathf.Round(cartPos.y);
-                        SpriteRenderer renderer = map[xx][yy].GetComponent<SpriteRenderer>();
+                    Cart cartPos = map[i][j].cartPos;
+                    SpriteRenderer renderer = map[cartPos.x][cartPos.y].instance.GetComponent<SpriteRenderer>();
                     float distance = (cartPos - position).magnitude;
+
+                    // fogWar
                     if (distance <= viewDistance)
                     {
                         renderer.material.color = Color.white;
@@ -52,6 +52,23 @@ public class MapManager : MonoBehaviour
                     else if (distance <= viewDistance + 2)
                     {
                         renderer.material.color = Color.gray;
+                    }
+                    // Unit
+                    else
+                    {
+                        if (map[i][j].isTaken && map[i][j].unit != null)
+                        {
+                            //Debug.Log("pos " + i + " " + j + " is taken by " + map[i][j].unit.transform.tag + " and will be destroyed");
+                            //Debug.Log("Player pos " + GameManager.instance.player.position.x + " " + GameManager.instance.player.position.y);
+                            UnitFactory.destroy(map[i][j].unit, map[i][j].unitType);
+                        }
+                    }
+                    if (distance <= viewDistance + 2)
+                    {
+                        if (map[i][j].isTaken && map[i][j].unit == null)
+                        {
+                            map[i][j].unit = UnitFactory.instantiate(map[i][j].unitType, new Cart(i, j));
+                        }
                     }
                 }
             }
@@ -70,21 +87,13 @@ public class MapManager : MonoBehaviour
 		if (map != null)
 		{
 			for (int x = 0; x < map.Length; ++x)
-			{
 				for (int y = 0; y < map[x].Length; ++y)
-				{
-					Destroy(map[x][y]);
-				}
-			}
+					Destroy(map[x][y].instance);
 		}
 		// allocate map array
-		map = new GameObject[column][];
-        litMapVisited = new bool[column][];
+		map = new Cube[column][];
 		for (int i = 0; i < column; ++i)
-		{
-			map[i] = new GameObject[rows];
-            litMapVisited[i] = new bool[rows];
-		}
+			map[i] = new Cube[rows];
 
 		// generate map with using perlin noise
 		for (int y = 0; y < rows; y++)
@@ -107,14 +116,14 @@ public class MapManager : MonoBehaviour
 					}
 					if (p < perlinOffset + perlinOffset / 2f)
 						index = 0;
-					instance = Instantiate(tilemaps[index].GetTile(UnityEngine.Random.Range(0f, 100f)), Utils.toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
+					instance = Instantiate(tilemaps[index].GetTile(UnityEngine.Random.Range(0f, 100f)), new Cart(x, y).toIsometric(), Quaternion.identity) as GameObject;
 					++floor;
 				}
 				else
 				{
-					instance = Instantiate(walls[0], Utils.toIsometric(new Vector3(x, y, 0)), Quaternion.identity) as GameObject;
+					instance = Instantiate(walls[0], new Cart(x, y).toIsometric(), Quaternion.identity) as GameObject;
 				}
-				map[x][y] = instance;
+                map[x][y] = new Cube(instance, new Cart(x, y));
 			}
 		}
 
@@ -126,31 +135,21 @@ public class MapManager : MonoBehaviour
 
 		connectIslands();
 
-        // Setup spawn and buildings
-		bool found = false;
-		for (int x = 0; x < map.Length; ++x)
-		{
-			for (int y = 0; y < map[x].Length; ++y)
-			{
-				if (!found && map[x][y].layer == LayerMask.NameToLayer("Floor"))
-				{
-					Destroy(map[x][y]);
-					map[x][y] = Instantiate(spawn, Utils.toIsometric(new Vector3(x, y, 0f)), Quaternion.identity) as GameObject;
-					found = true;
-					spawn = map[x][y];
-					break;
-				}
-                else if (isWall(x,y))
+        for (int x = 0; x < map.Length; ++x)
+        {
+            for (int y = 0; y < map[x].Length; ++y)
+            {
+                if (isWall(x, y))
                 {
-                    if (isWall(x-1,y-1))
+                    if (isWall(x - 1, y - 1))
                     {
-                        Vector3 newPos = map[x][y].transform.position;
-                        newPos.z = map[x-1][y-1].transform.position.z - 0.01f;
-                        map[x][y].transform.position = newPos;
+                        Vector3 newPos = map[x][y].instance.transform.position;
+                        newPos.z = map[x - 1][y - 1].instance.transform.position.z - 0.01f;
+                        map[x][y].instance.transform.position = newPos;
                     }
                 }
-			}
-		}
+            }
+        }
 
         // Update walls sprite
         for (int x = 0; x < map.Length; ++x)
@@ -160,37 +159,121 @@ public class MapManager : MonoBehaviour
                 GameObject newTile = null;
                 if (isWall(x,y) && isWall(x-2,y-2))
                 {
-                    if (map[x][y].transform.position.z > map[x - 1][y].transform.position.z && map[x][y].transform.position.z > map[x][y - 1].transform.position.z)
+                    if (map[x][y].instance.transform.position.z > map[x - 1][y].instance.transform.position.z && map[x][y].instance.transform.position.z > map[x][y - 1].instance.transform.position.z)
                     {
-                        if ((!isWall(x, y - 1) || map[x][y - 1].name != walls[1].name + "(Clone)") && (!isWall(x, y + 1) || map[x][y].transform.position.z < map[x][y + 1].transform.position.z))
+                        if ((!isWall(x, y - 1) || map[x][y - 1].instance.name != walls[1].name + "(Clone)") && (!isWall(x, y + 1) || map[x][y].instance.transform.position.z < map[x][y + 1].instance.transform.position.z))
                             newTile = walls[1];
-                        else if ((!isWall(x - 1, y) || map[x - 1][y].name != walls[2].name + "(Clone)") && (!isWall(x + 1, y) || map[x][y].transform.position.z < map[x + 1][y].transform.position.z))
+                        else if ((!isWall(x - 1, y) || map[x - 1][y].instance.name != walls[2].name + "(Clone)") && (!isWall(x + 1, y) || map[x][y].instance.transform.position.z < map[x + 1][y].instance.transform.position.z))
                             newTile = walls[2];
                     }
                     if (newTile != null)
                     {
-                        Destroy(map[x][y]);
-                        map[x][y] = Instantiate(newTile, map[x][y].transform.position, Quaternion.identity) as GameObject;
+                        Destroy(map[x][y].instance);
+                        map[x][y].instance = Instantiate(newTile, map[x][y].instance.transform.position, Quaternion.identity) as GameObject;
                     }
                 }
                 if (fogOfWar)
                 {
-                    SpriteRenderer renderer = map[x][y].GetComponent<SpriteRenderer>();
+                    SpriteRenderer renderer = map[x][y].instance.GetComponent<SpriteRenderer>();
                     renderer.material.color = Color.black;
                 }
             }
         }
 	}
 
+    enum Border { Undefined, Left, Right };
+    public Cart spawnPlayer()
+    {
+        Cart spawnPos = new Cart();
+
+        Border border = UnityEngine.Random.Range(0f, 1f) < 0.5 ? Border.Left : Border.Right;
+        int yy = 1;
+        int trigger = 0;
+        while (true)
+        {
+            spawnPos.x = (int)UnityEngine.Random.Range(0f, (float)map.Length - 1);
+            spawnPos.y = border == Border.Left ? 0 + yy : map[spawnPos.x].Length - yy;
+
+            int x = spawnPos.x;
+            int y = spawnPos.y;
+
+            if (map[x][y].instance.layer == LayerMask.NameToLayer("Floor"))
+                break;
+
+            trigger++;
+            if (trigger > 20)
+            {
+                yy++;
+                trigger = 0;
+            }
+        }
+
+        // spawn exit
+        border = border == Border.Left ? Border.Right : Border.Left;
+        trigger = 0;
+        yy = 1;
+        Cart exitPos = new Cart(spawnPos.x + 1, spawnPos.y);
+        while (true)
+        {
+            exitPos.x = (int)Math.Round(UnityEngine.Random.Range(0f, (float)map.Length - 1));
+            exitPos.y = border == Border.Left ? 0 + yy : map[exitPos.x].Length - yy;
+
+            int x = exitPos.x;
+            int y = exitPos.y;
+
+            if (map[x][y].instance.layer == LayerMask.NameToLayer("Floor"))
+                break;
+
+            trigger++;
+            if (trigger > 20)
+            {
+                yy++;
+                trigger = 0;
+            }
+        }
+        map[exitPos.x][exitPos.y].unitType = UnitFactoryType.Exit;
+        map[exitPos.x][exitPos.y].isTaken = true;
+
+        return spawnPos;
+    }
+
+    public Cart spawnEnemy()
+    {
+        Cart spawnPos = new Cart();
+
+        int trigger = 0;
+        while (true)
+        {
+            spawnPos.x = (int)UnityEngine.Random.Range(0f, (float)map.Length - 1);
+            spawnPos.y = (int)UnityEngine.Random.Range(0f, (float)map[spawnPos.x].Length - 1);
+
+            int x = (int)spawnPos.x;
+            int y = (int)spawnPos.y;
+
+            if (map[x][y].instance.layer == LayerMask.NameToLayer("Floor"))
+                break;
+
+            trigger++;
+            if (trigger > 50)
+            {
+                Debug.LogError("Trigger " + trigger);
+                break;
+            }
+        }
+
+        return spawnPos;
+    }
+
+
     private bool isWall(int x, int y)
     {
         if (x < 0 || x >= column || y < 0 || y >= rows)
             return false;
-        return map[x][y].layer == LayerMask.NameToLayer("BlockingLayer");
+        return map[x][y].instance.layer == LayerMask.NameToLayer("BlockingLayer");
     }
 
 	GameObject instance;
-	List<Vector3> path;
+	List<Cart> path = new List<Cart>();
 	List<GameObject> tileBackup = new List<GameObject>();
 	private void Update()
 	{
@@ -199,22 +282,18 @@ public class MapManager : MonoBehaviour
 			Destroy(instance);
 		Camera camera = Camera.main;
 
-		Vector3 mouse = Input.mousePosition;
-		mouse = camera.ScreenToWorldPoint(mouse);
+		Vector3 isoMouse = Input.mousePosition;
+		isoMouse = camera.ScreenToWorldPoint(isoMouse);
 
-		mouse = Utils.toCartesian(mouse);
-		mouse.x = Mathf.Round(mouse.x);
-		mouse.y = Mathf.Round(mouse.y);
-		Vector3 pos = Utils.toIsometric(new Vector3(mouse.x, mouse.y, -1f));
-		instance = Instantiate(closest, pos, Quaternion.identity) as GameObject;
+		Cart cartMouse = Utils.toCartesian(isoMouse);
+		instance = Instantiate(closest, cartMouse.toIsometric(), Quaternion.identity) as GameObject;
 
 		// debug path finding
 
 		if (Input.GetMouseButtonDown(0))
 		{
-            if (path == null)
-                return;
-			path = findPath(Utils.toCartesian(spawn.transform.position), mouse);
+            Player player = GameManager.instance.player;
+			path = findPath(player.position, cartMouse);
 			if (path.Count > 0)
 			{
 				for (int i = 0; i < tileBackup.Count; ++i)
@@ -222,23 +301,23 @@ public class MapManager : MonoBehaviour
 				tileBackup = new List<GameObject>();
 			}
 			for (int i = 0; i < path.Count; ++i)
-				tileBackup.Add(Instantiate(closest, Utils.toIsometric(path[i]), Quaternion.identity) as GameObject);
+				tileBackup.Add(Instantiate(closest, path[i].toIsometric(), Quaternion.identity) as GameObject);
 		}
 	}
 
 	private bool[,] visited;
 	private int islandCount;
-	private List<List<GameObject>> islands;
+	private List<List<Cube>> islands;
 	private void removeSmallIslands()
 	{
-		islands = new List<List<GameObject>>();
+		islands = new List<List<Cube>>();
 		visited = new bool[column, rows];
 		islandCount = 0;
 		for (int x = 0; x < map.Length; ++x)
 		{
 			for (int y = 0; y < map[x].Length; ++y)
 			{
-				if (!visited[x, y] && map[x][y].layer == LayerMask.NameToLayer("Floor"))
+				if (!visited[x, y] && map[x][y].instance.layer == LayerMask.NameToLayer("Floor"))
 				{
 					visit(x, y);
 					islandCount++;
@@ -250,8 +329,8 @@ public class MapManager : MonoBehaviour
 		{
 			if (islands[i].Count < (rows * column) / 10)
 			{
-				for (int a = 0; a < islands[i].Count; ++a)
-					replaceTile(walls[0], Utils.toCartesian(islands[i][a].transform.position));
+				for (int j = 0; j < islands[i].Count; ++j)
+					replaceTile(walls[0], islands[i][j].cartPos);
 				floor -= (uint)islands[i].Count;
 				islands.RemoveAt(i--);
 				--islandCount;
@@ -265,8 +344,8 @@ public class MapManager : MonoBehaviour
 			return;
 
 		if (islands.Count <= islandCount)
-			islands.Add(new List<GameObject>());
-		if (visited[x, y] == false && map[x][y].layer == LayerMask.NameToLayer("Floor"))
+			islands.Add(new List<Cube>());
+		if (visited[x, y] == false && map[x][y].instance.layer == LayerMask.NameToLayer("Floor"))
 		{
 			islands[islandCount].Add(map[x][y]);
 			visited[x, y] = true;
@@ -290,7 +369,7 @@ public class MapManager : MonoBehaviour
 				{
 					for (int b = 0; b < islands[j].Count; ++b)
 					{
-						float distance = Vector3.Distance(islands[i][a].transform.position, islands[j][b].transform.position);
+                        float distance = islands[i][a].cartPos.distanceTo(islands[j][b].cartPos);
 						if (distance < min)
 						{
 							min = distance;
@@ -299,20 +378,22 @@ public class MapManager : MonoBehaviour
 						}
 					}
 				}
-				Vector3 start = Utils.toCartesian(islands[i][firstIndex].transform.position);
-				Vector3 end = Utils.toCartesian(islands[j][secondIndex].transform.position);
-				start.x = Mathf.Round(start.x);
-				start.y = Mathf.Round(start.y);
-				end.x = Mathf.Round(end.x);
-				end.y = Mathf.Round(end.y);
-				float yratio = Mathf.Abs(end.y - start.y) / Mathf.Abs(end.x - start.x);
-				float xmoves = float.Epsilon;
-				float ymoves = float.Epsilon;
+				Cart start = islands[i][firstIndex].cartPos;
+				Cart end = islands[j][secondIndex].cartPos;
+
+                int dy = Mathf.Abs(end.y - start.y);
+                int dx = Mathf.Abs(end.x - start.x);
+                dy = dy == 0 ? 1 : dy;
+                dx = dx == 0 ? 1 : dx;
+				int yratio = dy / dx;
+
+				int xmoves = 1;
+				int ymoves = 1;
 				while (start.x != end.x || start.y != end.y)
 				{
-					float xdir = Mathf.Clamp(end.x - start.x, -1f, 1f);
-					float ydir = Mathf.Clamp(end.y - start.y, -1f, 1f);
-					if (ydir != 0f && (xdir == 0f || ymoves / xmoves <= yratio))
+					int xdir = (int)Mathf.Clamp(end.x - start.x, -1f, 1f);
+					int ydir = (int)Mathf.Clamp(end.y - start.y, -1f, 1f);
+					if (ydir != 0 && (xdir == 0 || ymoves / xmoves <= yratio))
 					{
 						start.y += ydir;
 						++ymoves;
@@ -324,26 +405,25 @@ public class MapManager : MonoBehaviour
 					}
 					if (start.x != end.x || start.y != end.y)
 					{
-						Destroy(map[(int)start.x][(int)start.y]);
-						map[(int)start.x][(int)start.y] = Instantiate(floorTiles[1], Utils.toIsometric(start), Quaternion.identity) as GameObject;
+						Destroy(map[start.x][start.y].instance);
+						map[start.x][start.y].instance = Instantiate(floorTiles[1], start.toIsometric(), Quaternion.identity) as GameObject;
 					}
 				}
 			}
 		}
 	}
 
-	private GameObject replaceTile(GameObject instance, Vector3 cartesianPosition)
+	private void replaceTile(GameObject instance, Cart cartesianPosition)
 	{
-		int x = (int)Mathf.Round(cartesianPosition.x);
-		int y = (int) Mathf.Round(cartesianPosition.y);
-		Destroy(map[x][y]);
-		map[x][y] = Instantiate(instance, Utils.toIsometric(new Vector3(x, y, 0f)), Quaternion.identity) as GameObject;
-		return map[x][y];
+		int x = cartesianPosition.x;
+		int y = cartesianPosition.y;
+		Destroy(map[x][y].instance);
+		map[x][y].instance = Instantiate(instance, cartesianPosition.toIsometric(), Quaternion.identity) as GameObject;
 	}
 
 	class Node
 	{
-		public Vector3 position { get; private set; }
+		public Cart position { get; private set; }
 		public float g { get; private set; } // cost from startNode to this node
 		public float h { get; private set; } // estimated cost from endNode to this node
 		public float f { get { return this.g + this.h; } } // sum of g and h
@@ -374,11 +454,14 @@ public class MapManager : MonoBehaviour
 			set
 			{
 				parent = value;
-				g = value.g + 1f;
+                if (parent.position.x != this.position.x && parent.position.y != this.position.y)
+                    g = value.g + 1.32f;
+                else
+                    g = value.g + 1f;
 			}
 		}
 
-		public Node(Vector3 position, Vector3 end)
+		public Node(Cart position, Cart end)
 		{
 			this.position = position;
 			h = Mathf.Abs(position.x - end.x) + Mathf.Abs(position.y - end.y);
@@ -392,21 +475,21 @@ public class MapManager : MonoBehaviour
 	private List<Node> openList;
 	// Find the shortest path between two cartesian coordinates using A* algorithm.
 	// Return an empty list if no path exists.
-	public List<Vector3> findPath(Vector3 cartesianStart, Vector3 cartesianEnd)
+	public List<Cart> findPath(Cart cartesianStart, Cart cartesianEnd)
 	{
-		List<Vector3> path = new List<Vector3>();
-		if (cartesianStart.x < 0f || cartesianStart.x >= column || cartesianStart.y < 0f || cartesianStart.y >= rows ||
-			cartesianEnd.x < 0f || cartesianEnd.x >= column || cartesianEnd.y < 0f || cartesianEnd.y >= rows)
-			return null;
+		List<Cart> path = new List<Cart>();
+		if (cartesianStart.x < 0 || cartesianStart.x >= column || cartesianStart.y < 0 || cartesianStart.y >= rows ||
+			cartesianEnd.x < 0 || cartesianEnd.x >= column || cartesianEnd.y < 0 || cartesianEnd.y >= rows)
+			return path;
 
 		nodes = new Node[column, rows];
 		for (int x = 0; x < column; ++x)
 		{
 			for (int y = 0; y < rows; ++y)
-				nodes[x, y] = new Node(new Vector3(x, y, 0f), cartesianEnd);
+				nodes[x, y] = new Node(new Cart(x, y), cartesianEnd);
 		}
-		Node startNode = nodes[(int)cartesianStart.x, (int)cartesianStart.y];
-		endNode = nodes[(int)cartesianEnd.x, (int)cartesianEnd.y];
+		Node startNode = nodes[cartesianStart.x, cartesianStart.y];
+		endNode = nodes[cartesianEnd.x, cartesianEnd.y];
 
 		openList = new List<Node>();
 
@@ -420,20 +503,19 @@ public class MapManager : MonoBehaviour
 			}
 			path.Reverse();
 		}
-		return path.Count == 0 ? null : path;
+		return path;
 	}
 
 	// Find the shortest path between two isometric coordinates using A* algorithm.
 	// return an empty list if no path exists.
 	public List<Vector3> findIsoPath(Vector3 isoStart, Vector3 isoEnd)
 	{
-		List<Vector3> path = findPath(Utils.toCartesian(isoStart), Utils.toCartesian(isoEnd));
-        if (path == null)
-            return null;
+		List<Cart> cartPath = findPath(Utils.toCartesian(isoStart), Utils.toCartesian(isoEnd));
+        List<Vector3> isoPath = new List<Vector3>();
 
-        for (int i = 0; i < path.Count; ++i)
-            path[i] = Utils.toIsometric(path[i]);
-		return path;
+        for (int i = 0; i < cartPath.Count; ++i)
+            isoPath.Add(cartPath[i].toIsometric());
+		return isoPath;
 	}
 
 	private bool search(Node current)
@@ -499,7 +581,7 @@ public class MapManager : MonoBehaviour
 			if (x < 0 || x >= nodes.GetLength(0) || y < 0 || y >= nodes.GetLength(1))
 				continue;
 
-			if (map[x][y].layer != LayerMask.NameToLayer("Floor"))
+			if (map[x][y].instance.layer != LayerMask.NameToLayer("Floor"))
 				continue;
 
 			Node node = nodes[x, y];

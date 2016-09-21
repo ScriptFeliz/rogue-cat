@@ -22,6 +22,8 @@ GameObject:
   - 212: {fileID: 212000011012039652}
   - 95: {fileID: 95000012578415698}
   - 114: {fileID: 114000012042845926}
+  - 50: {fileID: 50000010766514394}
+  - 58: {fileID: 58000010142188654}
   m_Layer: 0
   m_Name: sara
   m_TagString: Player
@@ -36,12 +38,43 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012699038874}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5684371, y: 9.003035, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0.865, y: 0.691, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!50 &50000010766514394
+Rigidbody2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012699038874}
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &58000010142188654
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012699038874}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0.08}
+  serializedVersion: 2
+  m_Radius: 0.18
 --- !u!95 &95000012578415698
 Animator:
   serializedVersion: 3
@@ -70,11 +103,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb1f0da6d2b7b14990dcd7facd6bd44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zIndex: 0.25
-  health: 100
-  damage: 12
-  speed: 5.9
-  moving: 0
+  zIndex: 10
+  _health: 0
+  _damage: 0
+  path: []
+  skipMoveCount: 0
 --- !u!212 &212000011012039652
 SpriteRenderer:
   m_ObjectHideFlags: 1
