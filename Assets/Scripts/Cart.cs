@@ -9,6 +9,11 @@ public class Cart {
     public int sqrMagnitude { get { return x * x + y * y; } }
     public float magnitude { get { return (float)Mathf.Sqrt(x * x + y * y); } }
 
+    public override string ToString()
+    {
+        return string.Concat("Cart (" + x + ", " + y + ")");
+    }
+
     public Cart()
     {
         x = 0;
@@ -29,10 +34,39 @@ public class Cart {
         y = (int)pos.y;
     }
 
-    public static Cart operator +(Cart a, Cart b) {  return new Cart(a.x + b.x, a.y + b.y); }
-    public static Cart operator -(Cart a, Cart b) {  return new Cart(a.x - b.x, a.y - b.y); }
-    public static Cart operator *(Cart a, Cart b) {  return new Cart(a.x * b.x, a.y * b.y); }
-    public static Cart operator /(Cart a, Cart b) {  return new Cart(a.x / b.x, a.y / b.y); }
+    public override bool Equals(System.Object o)
+    {
+        if (o is Cart)
+        {
+            return Equals(o as Cart);
+        }
+        else
+        {
+            return base.Equals(o);
+        }
+    }
+    public bool Equals(Cart c)
+    {
+        if (c == null)
+            return false;
+        return (x == c.x && y == c.y);
+    }
+
+    public override int GetHashCode()
+    {
+        return x ^ y;
+    }
+
+    public static Cart operator +(Cart a, Cart b) { return new Cart(a.x + b.x, a.y + b.y); }
+    public static Cart operator -(Cart a, Cart b) { return new Cart(a.x - b.x, a.y - b.y); }
+    public static Cart operator *(Cart a, Cart b) { return new Cart(a.x * b.x, a.y * b.y); }
+    public static Cart operator /(Cart a, Cart b) { return new Cart(a.x / b.x, a.y / b.y); }
+    public static bool operator ==(Cart a, Cart b) {
+        if (object.ReferenceEquals(a, b)) return true;
+        if ((object)a == null || (object)b == null) return false;
+        return (a.x == b.x && a.y == b.y);
+    }
+    public static bool operator !=(Cart a, Cart b) { return !(a == b); }
 
     public Vector3 toIsometric()
     {

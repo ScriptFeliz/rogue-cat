@@ -8,29 +8,25 @@ public class Enemy : MovingUnit {
 
     public void initialize(Cart startPos, int health, int damage, float speed)
     {
-        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        base.movingUnitInitialize(UnitFactoryType.Enemy, startPos, health, damage, speed);
+        base.movingUnitInitialize(startPos, health, damage, speed);
     }
 
-    public bool readyToAttack(out Cart targetPos)
+    public void setTarget(Player newTarget)
     {
-        targetPos = null;
-        if (position.distanceTo(target.position) < 5f)
-        {
-            targetPos = (target.nextPos != null) ? target.nextPos : target.position;
-            return true;
-        }
-        return false;
+        target = newTarget;
+    }
+    public float distanceToTarget()
+    {
+        return position.distanceTo(target.position);
     }
 
     override public bool attemptMove()
     {
-        if (target == null)
-            target = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-
-        Cart targetPos;
-        if (readyToAttack(out targetPos))
+        if (distanceToTarget() < 5f)
+        {
+            Cart targetPos = (target.nextPos != null) ? target.nextPos : target.position;
             computePath(targetPos);
+        }
 
         GameObject unit;
         bool canMove = move(out unit);

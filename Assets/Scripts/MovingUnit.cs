@@ -19,9 +19,9 @@ public abstract class MovingUnit : Unit {
     public int skipMoveCount;
     private float _speed;
 
-    public void movingUnitInitialize(UnitFactoryType type, Cart startPos, int health, int damage, float speed)
+    public void movingUnitInitialize(Cart startPos, int health, int damage, float speed)
     {
-        base.unitInitialize(type, startPos, health, damage);
+        base.unitInitialize(startPos, health, damage);
 
         animator = GetComponent<Animator>();
         blockingLayer = LayerMask.NameToLayer("BlockingLayer");
@@ -42,18 +42,6 @@ public abstract class MovingUnit : Unit {
     {
         path = GameManager.instance.mapManager.findPath(position, dest);
         return path.Count != 0;
-    }
-
-    protected bool getNextMove(out Cart nextMove)
-    {
-        if (path.Count <= 0)
-        {
-            nextMove = new Cart();
-            return false;
-        }
-        nextMove = path[0];
-        path.RemoveAt(0);
-        return true;
     }
 
     protected IEnumerator smoothMovement(Cart end)
@@ -114,15 +102,17 @@ public abstract class MovingUnit : Unit {
 
         if (skipMoveCount == 0)
         {
-            bool haveNextMove;
+            Cart nextMove = null;
 
-            Cart nextMove;
-            haveNextMove = getNextMove(out nextMove);
-            if (haveNextMove)
+            while (path.Count > 0 && path[0] == position)
+                path.RemoveAt(0);
+            if (path.Count > 0)
+                nextMove = path[0];
+            if (nextMove != null)
             {
                 bool canMove;
 
-                if (GameManager.instance.mapManager.map[nextMove.x][nextMove.y].isTaken == true)
+                if (GameManager.instance.mapManager.map[nextMove.x][nextMove.y].unit != null)
                 {
                     canMove = false;
                     unit = GameManager.instance.mapManager.map[nextMove.x][nextMove.y].unit;
@@ -131,11 +121,8 @@ public abstract class MovingUnit : Unit {
                 {
                     canMove = true;
                     nextPos = nextMove;
-                    GameManager.instance.mapManager.map[position.x][position.y].isTaken = false;
-                    GameManager.instance.mapManager.map[position.x][position.y].unitType = UnitFactoryType.Undefined;
+                    path.RemoveAt(0);
                     GameManager.instance.mapManager.map[position.x][position.y].unit = null;
-                    GameManager.instance.mapManager.map[nextMove.x][nextMove.y].isTaken = true;
-                    GameManager.instance.mapManager.map[nextMove.x][nextMove.y].unitType = unitType;
                     GameManager.instance.mapManager.map[nextMove.x][nextMove.y].unit = gameObject;
                 }
 
@@ -146,7 +133,7 @@ public abstract class MovingUnit : Unit {
                     StartCoroutine(smoothMovement(nextMove));
                     return true;
                 }
-                //Debug.Log(transform.tag + " cant move");
+                //Debug.Log(transform.tag + " cant move pos " + position.toString() + " nextPos " + nextMove.toString());
             }
         }
         else

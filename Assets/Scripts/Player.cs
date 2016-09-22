@@ -6,7 +6,7 @@ public class Player : MovingUnit {
 
     public void initialize(Cart startPos, int health, int damage, float speed)
     {
-        base.movingUnitInitialize(UnitFactoryType.Player, startPos, health, damage, speed);
+        base.movingUnitInitialize(startPos, health, damage, speed);
     }
 
 	override protected void Update ()
@@ -35,6 +35,11 @@ public class Player : MovingUnit {
         bool canMove = move(out unit);
         if (!canMove && unit != null)
         {
+            if (unit.transform.tag == "Enemy")
+            {
+                path.Clear();
+                GameManager.instance.turnLeft = 0;
+            }
             if (unit.transform.tag == "Finish")
             {
                 GameManager.instance.win();
