@@ -6,7 +6,7 @@ public abstract class MovingUnit : Unit {
 
     private int frameMaxPerMove = 12;
 
-    private Animator animator;
+    protected Animator animator;
     protected LayerMask blockingLayer;			    //Layer on which collision will be checked.
     
     protected CircleCollider2D circleCollider; 		//The CircleCollider2D component attached to this object.
