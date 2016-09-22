@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,7 +9,7 @@ public class Player : MovingUnit {
         base.movingUnitInitialize(startPos, health, damage, speed);
     }
 
-	override protected void Update ()
+	override protected void Update()
     {
         Camera camera = Camera.main;
 
@@ -29,10 +29,17 @@ public class Player : MovingUnit {
         base.Update();
 	}
 
+	private IEnumerator loot(GameObject item)
+	{
+		while (moving)
+			yield return null;
+		GameManager.instance.itemManager.loot(item);
+	}
+
     override public bool attemptMove()
     {
-        GameObject unit;
-        bool canMove = move(out unit);
+		GameObject unit, item;
+        bool canMove = move(out unit, out item);
         if (!canMove && unit != null)
         {
             if (unit.transform.tag == "Enemy")
@@ -45,6 +52,11 @@ public class Player : MovingUnit {
                 GameManager.instance.win();
             }
         }
+		if (canMove && item != null)
+		{
+			GameManager.instance.mapManager.map[nextPos.x][nextPos.y].item = null;
+			StartCoroutine(loot(item));
+		}
         return canMove;
     }
 }

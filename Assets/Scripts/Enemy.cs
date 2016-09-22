@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -28,8 +28,8 @@ public class Enemy : MovingUnit {
             computePath(targetPos);
         }
 
-        GameObject unit;
-        bool canMove = move(out unit);
+        GameObject unit, item;
+        bool canMove = move(out unit, out item);
         if (!canMove && unit != null)
         {
             if (unit.transform.tag == "Player")

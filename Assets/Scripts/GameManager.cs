@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour {
     public Player player;
     public List<Enemy> enemyList = new List<Enemy>();
 
+	[System.NonSerialized]
+	public ItemManager itemManager;
+
     private int movingUnitDoneCount;
 
     public int turnLeft;
@@ -57,6 +60,10 @@ public class GameManager : MonoBehaviour {
 
     private void init()
     {
+		// itemManager
+		itemManager = GetComponent<ItemManager>();
+		itemManager.removeNotLootedItems();
+
         // map
         mapManager = GetComponent<MapManager>();
         mapManager.MapSetup(level);
@@ -78,6 +85,9 @@ public class GameManager : MonoBehaviour {
             Enemy enemy = UnitFactory.createEnemy(enemySpawn);
             enemy.setTarget(player);
         }
+
+		// spawn items
+		mapManager.spawnItems();
 
         movingUnitDoneCount = enemyList.Count + 1; // + 1 for player
         turnLeft = 0;
