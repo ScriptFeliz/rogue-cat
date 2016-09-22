@@ -107,7 +107,7 @@ public class ItemListEditor : EditorWindow
 		EditorGUILayout.BeginHorizontal();
 
 		EditorStyles.popup.fixedHeight = 15;
-		viewIndex = EditorGUILayout.Popup(viewIndex, itemNames, GUILayout.Width(this.minSize.x / 2f));
+		viewIndex = EditorGUILayout.Popup(viewIndex, itemNames, GUILayout.Width(this.minSize.x / 3f));
 
 		// Add item to the list or open one.
 		if (GUILayout.Button("Add / Open", GUILayout.ExpandWidth(false), GUILayout.Height(15))) // Add item
@@ -148,6 +148,17 @@ public class ItemListEditor : EditorWindow
 					--viewIndex;
 			}
 		}
+
+		// Save ItemList
+		if (GUILayout.Button("Save", GUILayout.ExpandWidth(false), GUILayout.Height(15)))
+		{
+			if (itemList.items != null && itemList.items.Count > 0)
+			{
+				EditorUtility.SetDirty(itemList);
+				foreach (Item item in itemList.items)
+					EditorUtility.SetDirty(item);
+			}
+		}	
 
 		EditorGUILayout.EndHorizontal();
 		/* Item selector */
@@ -197,6 +208,8 @@ public class ItemListEditor : EditorWindow
 			EditorGUILayout.EndHorizontal();
 		}
 		EditorGUILayout.EndVertical();
+
+		AssetDatabase.SaveAssets();
 	}
 
 	private void OnFocus()
