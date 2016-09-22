@@ -12,6 +12,7 @@ public class MapManager : MonoBehaviour
     private uint columnInit;
     private uint rowInit;
     private uint enemyInit;
+	private uint itemCount;
     public uint getEnemyCount() { return enemyCount; }
 
 	public GameObject[] floorTiles;
@@ -65,6 +66,8 @@ public class MapManager : MonoBehaviour
                         {
                             if (map[i][j].unit != null)
                                 map[i][j].unit.GetComponent<SpriteRenderer>().enabled = true;
+                            if (map[i][j].item != null)
+                                map[i][j].item.GetComponent<SpriteRenderer>().enabled = true;
                             cubeRenderer.material.color = Color.white;
                         }
                         else
@@ -77,6 +80,8 @@ public class MapManager : MonoBehaviour
                     {
                         if (map[i][j].unit != null)
                             map[i][j].unit.GetComponent<SpriteRenderer>().enabled = false;
+                        if (map[i][j].item != null)
+                            map[i][j].item.GetComponent<SpriteRenderer>().enabled = false;
                     }
                 }
             }
@@ -89,6 +94,7 @@ public class MapManager : MonoBehaviour
         columnCount = columnInit + level * 2;
         rowCount = rowInit + level * 2;
         enemyCount = enemyInit + level / 2;
+		itemCount = (uint)(level * 1.5f);
 
         //
 		floor = 0;
@@ -277,6 +283,28 @@ public class MapManager : MonoBehaviour
 
         return spawnPos;
     }
+
+	public void spawnItems()
+	{
+		Cart spawnPos = new Cart();
+
+		int iterations = 0;
+		for (int i = 0; i < itemCount; ++i)
+		{
+			spawnPos.x = (int)UnityEngine.Random.Range(0f, (float)map.Length - 1);
+            spawnPos.y = (int)UnityEngine.Random.Range(0f, (float)map[spawnPos.x].Length - 1);
+
+			if (map[spawnPos.x][spawnPos.y].instance.layer != LayerMask.NameToLayer("Floor") || map[spawnPos.x][spawnPos.y].unit != null)
+				--i;
+			else
+			{
+				GameObject itemGameObject = GameManager.instance.itemManager.spawnItem(spawnPos);
+				map[spawnPos.x][spawnPos.y].item = itemGameObject;
+			}
+			if (++iterations > itemCount * 2)
+				break;
+		}
+	}
 
 
     private bool isWall(int x, int y)

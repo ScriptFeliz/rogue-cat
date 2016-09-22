@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Cube {
@@ -11,6 +11,7 @@ public class Cube {
 
     // unit
     public GameObject unit;
+	public GameObject item;
 
     public Cube(GameObject gameObj, Cart pos)
     {

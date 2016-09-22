@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,7 +12,7 @@ public abstract class MovingUnit : Unit {
     protected CircleCollider2D circleCollider; 		//The CircleCollider2D component attached to this object.
     protected Rigidbody2D rb2D;				        //The Rigidbody2D component attached to this object.
 
-    private bool moving;
+    protected bool moving;
 
     public List<Cart> path;
     public Cart nextPos;
@@ -96,9 +96,10 @@ public abstract class MovingUnit : Unit {
         int alternateMoveIndex = 0;
     }*/
 
-    protected bool move(out GameObject unit)
+    protected bool move(out GameObject unit, out GameObject item)
     {
         unit = null;
+		item = null;
 
         if (skipMoveCount == 0)
         {
@@ -125,6 +126,11 @@ public abstract class MovingUnit : Unit {
                     GameManager.instance.mapManager.map[position.x][position.y].unit = null;
                     GameManager.instance.mapManager.map[nextMove.x][nextMove.y].unit = gameObject;
                 }
+
+				if (GameManager.instance.mapManager.map[nextMove.x][nextMove.y].item != null)
+				{
+                    item = GameManager.instance.mapManager.map[nextMove.x][nextMove.y].item;
+				}
 
                 if (canMove)
                 {
