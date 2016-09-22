@@ -32,15 +32,27 @@ public class GameManager : MonoBehaviour {
 		else
 			Destroy(this);
 		DontDestroyOnLoad(gameObject);
+        GetComponent<MapManager>().initOnce();
         init();
 	}
 
     public void enemySkipMove()
     {
-        Cart targetPos;
+        Enemy enemyRef = null;
+        float distance = float.MaxValue;
+        float distanceCur;
+
         foreach (Enemy enemy in enemyList)
-            if (enemy.readyToAttack(out targetPos))
-                enemy.skipMoveCount = 4;
+        {
+            distanceCur = enemy.distanceToTarget();
+            if (distanceCur < distance)
+            {
+                distance = distanceCur;
+                enemyRef = enemy;
+            }
+        }
+        if (enemyRef != null)
+            enemyRef.skipMoveCount = 4;
     }
 
     private void init()
@@ -60,12 +72,11 @@ public class GameManager : MonoBehaviour {
         camera.transform.position = player.gameObject.transform.position - new Vector3(0, 0, 30);
 
         // enemy
-        for (int i = 0; i < 8; i ++)
+        for (int i = 0; i < mapManager.getEnemyCount(); i ++)
         {
             Cart enemySpawn = instance.mapManager.spawnEnemy();
-            instance.mapManager.map[enemySpawn.x][enemySpawn.y].isTaken = true;
-            instance.mapManager.map[enemySpawn.x][enemySpawn.y].unitType = UnitFactoryType.Enemy;
-            // Enemy will be spawned in LitMap()
+            Enemy enemy = UnitFactory.createEnemy(enemySpawn);
+            enemy.setTarget(player);
         }
 
         movingUnitDoneCount = enemyList.Count + 1; // + 1 for player
@@ -107,11 +118,13 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("You Win!");
         reset = true;
+        level++;
     }
 
     public void gameOver()
     {
         Debug.Log("Game Over");
         reset = true;
+        level = 1;
     }
 }

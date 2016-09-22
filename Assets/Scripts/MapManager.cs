@@ -5,8 +5,15 @@ using System.Collections.Generic;
 
 public class MapManager : MonoBehaviour
 {
-	public int column = 20;
-	public int rows = 20;
+	public uint columnCount;
+	public uint rowCount;
+    public uint enemyCount;
+
+    private uint columnInit;
+    private uint rowInit;
+    private uint enemyInit;
+    public uint getEnemyCount() { return enemyCount; }
+
 	public GameObject[] floorTiles;
 	public TileMap[] tilemaps;
 	public GameObject[] walls;
@@ -24,6 +31,13 @@ public class MapManager : MonoBehaviour
     public bool fogOfWar = true;
 	public GameObject closest;
 
+    public void initOnce()
+    {
+        columnInit = columnCount;
+        rowInit = rowCount;
+        enemyInit = enemyCount;
+    }
+
     public void litMap(Cart position)
     {
         if (position == null)
@@ -36,39 +50,33 @@ public class MapManager : MonoBehaviour
 
         if (!map[x][y].litVisited)
         {
-            for (int i = 0; i < column; ++i)
+            for (int i = 0; i < columnCount; ++i)
             {
-                for (int j = 0; j < rows; ++j)
+                for (int j = 0; j < rowCount; ++j)
                 {
                     Cart cartPos = map[i][j].cartPos;
-                    SpriteRenderer renderer = map[cartPos.x][cartPos.y].instance.GetComponent<SpriteRenderer>();
+                    SpriteRenderer cubeRenderer = map[cartPos.x][cartPos.y].instance.GetComponent<SpriteRenderer>();
                     float distance = (cartPos - position).magnitude;
 
                     // fogWar
-                    if (distance <= viewDistance)
+                    if (distance <= viewDistance + 2)
                     {
-                        renderer.material.color = Color.white;
-                    }
-                    else if (distance <= viewDistance + 2)
-                    {
-                        renderer.material.color = Color.gray;
+                        if (distance <= viewDistance)
+                        {
+                            if (map[i][j].unit != null)
+                                map[i][j].unit.GetComponent<SpriteRenderer>().enabled = true;
+                            cubeRenderer.material.color = Color.white;
+                        }
+                        else
+                        {
+                            cubeRenderer.material.color = Color.gray;
+                        }
                     }
                     // Unit
                     else
                     {
-                        if (map[i][j].isTaken && map[i][j].unit != null)
-                        {
-                            //Debug.Log("pos " + i + " " + j + " is taken by " + map[i][j].unit.transform.tag + " and will be destroyed");
-                            //Debug.Log("Player pos " + GameManager.instance.player.position.x + " " + GameManager.instance.player.position.y);
-                            UnitFactory.destroy(map[i][j].unit, map[i][j].unitType);
-                        }
-                    }
-                    if (distance <= viewDistance + 2)
-                    {
-                        if (map[i][j].isTaken && map[i][j].unit == null)
-                        {
-                            map[i][j].unit = UnitFactory.instantiate(map[i][j].unitType, new Cart(i, j));
-                        }
+                        if (map[i][j].unit != null)
+                            map[i][j].unit.GetComponent<SpriteRenderer>().enabled = false;
                     }
                 }
             }
@@ -77,6 +85,12 @@ public class MapManager : MonoBehaviour
 
 	public void MapSetup(uint level)
 	{
+        // 
+        columnCount = columnInit + level * 2;
+        rowCount = rowInit + level * 2;
+        enemyCount = enemyInit + level / 2;
+
+        //
 		floor = 0;
 		// remove debug pathfinding tiles
 		foreach (GameObject tile in tileBackup)
@@ -90,15 +104,16 @@ public class MapManager : MonoBehaviour
 				for (int y = 0; y < map[x].Length; ++y)
 					Destroy(map[x][y].instance);
 		}
+
 		// allocate map array
-		map = new Cube[column][];
-		for (int i = 0; i < column; ++i)
-			map[i] = new Cube[rows];
+		map = new Cube[columnCount][];
+		for (int i = 0; i < columnCount; ++i)
+			map[i] = new Cube[rowCount];
 
 		// generate map with using perlin noise
-		for (int y = 0; y < rows; y++)
+		for (int y = 0; y < rowCount; y++)
 		{
-			for (int x = 0; x < column; x++)
+			for (int x = 0; x < columnCount; x++)
 			{
 				GameObject instance;
 				float seed = (float)Network.time + 0.1f;
@@ -130,8 +145,8 @@ public class MapManager : MonoBehaviour
 		removeSmallIslands();
 
 		// if the map is too small, regenerate it
-		if (floor < column * rows / 3f)
-			MapSetup(level);
+		if (floor < columnCount * rowCount / 3f)
+			MapSetup(level); // !StackOverflow
 
 		connectIslands();
 
@@ -212,7 +227,7 @@ public class MapManager : MonoBehaviour
         border = border == Border.Left ? Border.Right : Border.Left;
         trigger = 0;
         yy = 1;
-        Cart exitPos = new Cart(spawnPos.x + 1, spawnPos.y);
+        Cart exitPos = new Cart();
         while (true)
         {
             exitPos.x = (int)Math.Round(UnityEngine.Random.Range(0f, (float)map.Length - 1));
@@ -231,8 +246,7 @@ public class MapManager : MonoBehaviour
                 trigger = 0;
             }
         }
-        map[exitPos.x][exitPos.y].unitType = UnitFactoryType.Exit;
-        map[exitPos.x][exitPos.y].isTaken = true;
+        map[exitPos.x][exitPos.y].unit = UnitFactory.createExit(new Cart(exitPos.x, exitPos.y));
 
         return spawnPos;
     }
@@ -250,7 +264,7 @@ public class MapManager : MonoBehaviour
             int x = (int)spawnPos.x;
             int y = (int)spawnPos.y;
 
-            if (map[x][y].instance.layer == LayerMask.NameToLayer("Floor"))
+            if (map[x][y].instance.layer == LayerMask.NameToLayer("Floor") && map[x][y].unit == null)
                 break;
 
             trigger++;
@@ -267,7 +281,7 @@ public class MapManager : MonoBehaviour
 
     private bool isWall(int x, int y)
     {
-        if (x < 0 || x >= column || y < 0 || y >= rows)
+        if (x < 0 || x >= columnCount || y < 0 || y >= rowCount)
             return false;
         return map[x][y].instance.layer == LayerMask.NameToLayer("BlockingLayer");
     }
@@ -311,7 +325,7 @@ public class MapManager : MonoBehaviour
 	private void removeSmallIslands()
 	{
 		islands = new List<List<Cube>>();
-		visited = new bool[column, rows];
+		visited = new bool[columnCount, rowCount];
 		islandCount = 0;
 		for (int x = 0; x < map.Length; ++x)
 		{
@@ -327,7 +341,7 @@ public class MapManager : MonoBehaviour
 
 		for (int i = 0; i < islandCount; ++i)
 		{
-			if (islands[i].Count < (rows * column) / 10)
+			if (islands[i].Count < (rowCount * columnCount) / 10)
 			{
 				for (int j = 0; j < islands[i].Count; ++j)
 					replaceTile(walls[0], islands[i][j].cartPos);
@@ -340,7 +354,7 @@ public class MapManager : MonoBehaviour
 
 	private void visit(int x, int y)
 	{
-		if (x < 0 || x >= column || y < 0 || y >= rows)
+		if (x < 0 || x >= columnCount || y < 0 || y >= rowCount)
 			return;
 
 		if (islands.Count <= islandCount)
@@ -478,14 +492,14 @@ public class MapManager : MonoBehaviour
 	public List<Cart> findPath(Cart cartesianStart, Cart cartesianEnd)
 	{
 		List<Cart> path = new List<Cart>();
-		if (cartesianStart.x < 0 || cartesianStart.x >= column || cartesianStart.y < 0 || cartesianStart.y >= rows ||
-			cartesianEnd.x < 0 || cartesianEnd.x >= column || cartesianEnd.y < 0 || cartesianEnd.y >= rows)
+		if (cartesianStart.x < 0 || cartesianStart.x >= columnCount || cartesianStart.y < 0 || cartesianStart.y >= rowCount ||
+			cartesianEnd.x < 0 || cartesianEnd.x >= columnCount || cartesianEnd.y < 0 || cartesianEnd.y >= rowCount)
 			return path;
 
-		nodes = new Node[column, rows];
-		for (int x = 0; x < column; ++x)
+		nodes = new Node[columnCount, rowCount];
+		for (int x = 0; x < columnCount; ++x)
 		{
-			for (int y = 0; y < rows; ++y)
+			for (int y = 0; y < rowCount; ++y)
 				nodes[x, y] = new Node(new Cart(x, y), cartesianEnd);
 		}
 		Node startNode = nodes[cartesianStart.x, cartesianStart.y];

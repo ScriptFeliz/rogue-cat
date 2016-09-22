@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum UnitFactoryType { Undefined, Player, Enemy, Exit };
+public enum UnitState { Hidden, Shown };
 
 public class UnitFactory : MonoBehaviour {
 
@@ -25,9 +25,7 @@ public class UnitFactory : MonoBehaviour {
         speed = GameManager.instance.speed;
 
         while (gameObjList.Count > 0)
-        {
             gameObjDestroy(gameObjList[0]);
-        }
         enemyList.Clear();
     }
 
@@ -43,47 +41,17 @@ public class UnitFactory : MonoBehaviour {
     static private bool gameObjDestroy(GameObject gameObj)
     {
         if (gameObj == null)
+        {
+            Debug.LogError("UnitFactory: gameObjDestroy() gameObj null");
             return false;
-        if (!gameObjList.Remove(gameObj))
-            return false;
+        }
         Destroy(gameObj);
+        if (!gameObjList.Remove(gameObj))
+        {
+            Debug.LogError("UnitFactory: gameObjDestroy() gameObjList.remove() failed");
+            return false;
+        }
         return true;
-    }
-
-    static public GameObject instantiate(UnitFactoryType type, Cart spawnPos)
-    {
-        GameObject gameObj = null;
-
-        switch (type)
-        {
-            case UnitFactoryType.Enemy:
-                Enemy enemy = createEnemy(spawnPos);
-                gameObj = enemy.gameObject;
-                break;
-            case UnitFactoryType.Exit:
-                gameObj = createExit(spawnPos);
-                break;
-            default:
-                Debug.LogError("Instantiate a gameObject of type " + type.ToString() + " with UnitFactory.instantiate() is forbidden");
-                break;
-        }
-
-        return gameObj;
-    }
-    static public void destroy(GameObject gameObj, UnitFactoryType type)
-    {
-        switch (type)
-        {
-            case UnitFactoryType.Enemy:
-                destroyEnemy(gameObj);
-                break;
-            case UnitFactoryType.Exit:
-                Destroy(gameObj);
-                break;
-            default:
-                Debug.LogError("destroy a gameObject of type " + type.ToString() + " with UnitFactory.destroy() is forbidden. gameObj tag: " + gameObj.transform.tag);
-                break;
-        }
     }
 
     // player
