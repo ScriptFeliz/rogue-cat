@@ -22,11 +22,12 @@ public class Player : MovingUnit {
         }
         if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log("Stop Enemies");
             GameManager.instance.enemySkipMove();
+            animator.Play("mallowSeduction");
+            Debug.Log("Stop Enemies");
         }
 
-        base.Update();
+            base.Update();
 	}
 
 	private IEnumerator loot(GameObject item)
