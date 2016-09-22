@@ -11,5 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e0f40ff0c6a4bc4092e2d584c366e13, type: 3}
   m_Name: ItemDataBase
   m_EditorClassIdentifier: 
-  items: []
+  items:
+  - {fileID: 11400000, guid: be2ab08faee26d347b77cf1e2a2269e4, type: 2}
+  - {fileID: 11400000, guid: 9c8cf0dedd575ca4a8d4a82c9472acc7, type: 2}
   recipes: []
