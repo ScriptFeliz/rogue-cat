@@ -34,7 +34,7 @@ public class Utils
         cartx = cartx < minFloat && cartx > -1 ? 0f : cartx / 2f;
         float carty = (isoPosition.y * (2f / tileSizeInUnits.y) - cartx);
         carty = carty < minFloat && carty > -1 ? 0f : carty;
-        return new Cart((int)cartx, (int)carty);
+        return new Cart((int)Mathf.Round(cartx), (int)Mathf.Round(carty));
     }
 
     public static Vector3 roundVector3(Vector3 vec)
