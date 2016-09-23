@@ -1,0 +1,409 @@
+fileFormatVersion: 2
+guid: e2ebc9837cb3aaa49a36e4bf33711adc
+timeCreated: 1474391829
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: CatSeductionBlue_0
+    21300002: CatSeductionBlue_1
+    21300004: CatSeductionBlue_2
+    21300006: CatSeductionBlue_3
+    21300008: CatSeductionBlue_4
+    21300010: CatSeductionBlue_5
+    21300012: CatSeductionBlue_6
+    21300014: CatSeductionBlue_7
+    21300016: CatSeductionBlue_8
+    21300018: CatSeductionBlue_9
+    21300020: CatSeductionBlue_10
+    21300022: CatSeductionBlue_11
+    21300024: CatSeductionBlue_12
+    21300026: CatSeductionBlue_13
+    21300028: CatSeductionBlue_14
+    21300030: CatSeductionBlue_15
+    21300032: CatSeductionBlue_16
+    21300034: CatSeductionBlue_17
+    21300036: CatSeductionBlue_18
+    21300038: CatSeductionBlue_19
+    21300040: CatSeductionBlue_20
+    21300042: CatSeductionBlue_21
+    21300044: CatSeductionBlue_22
+    21300046: CatSeductionBlue_23
+    21300048: CatSeductionBlue_24
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 505
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CatSeductionBlue_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1536
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_1
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 1536
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_2
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 1536
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_3
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 1536
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_4
+      rect:
+        serializedVersion: 2
+        x: 1424
+        y: 1536
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_5
+      rect:
+        serializedVersion: 2
+        x: 1780
+        y: 1536
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_6
+      rect:
+        serializedVersion: 2
+        x: 2136
+        y: 1536
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_8
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_9
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_10
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_11
+      rect:
+        serializedVersion: 2
+        x: 1424
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_12
+      rect:
+        serializedVersion: 2
+        x: 1780
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_13
+      rect:
+        serializedVersion: 2
+        x: 2136
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_15
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_16
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_17
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_18
+      rect:
+        serializedVersion: 2
+        x: 1424
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_19
+      rect:
+        serializedVersion: 2
+        x: 1780
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_20
+      rect:
+        serializedVersion: 2
+        x: 2136
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_21
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_22
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 0
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_23
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 0
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatSeductionBlue_24
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 0
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

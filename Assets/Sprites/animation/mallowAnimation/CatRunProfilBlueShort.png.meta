@@ -1,0 +1,241 @@
+fileFormatVersion: 2
+guid: fdd1508a68ef9a8489f9e0bf92ff6984
+timeCreated: 1474391800
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: CatRunProfilBlueShort_0
+    21300002: CatRunProfilBlueShort_1
+    21300004: CatRunProfilBlueShort_2
+    21300006: CatRunProfilBlueShort_3
+    21300008: CatRunProfilBlueShort_4
+    21300010: CatRunProfilBlueShort_5
+    21300012: CatRunProfilBlueShort_6
+    21300014: CatRunProfilBlueShort_7
+    21300016: CatRunProfilBlueShort_8
+    21300018: CatRunProfilBlueShort_9
+    21300020: CatRunProfilBlueShort_10
+    21300022: CatRunProfilBlueShort_11
+    21300024: CatRunProfilBlueShort_12
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 505
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_1
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_2
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_3
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_4
+      rect:
+        serializedVersion: 2
+        x: 1424
+        y: 1024
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_6
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_7
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_8
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_9
+      rect:
+        serializedVersion: 2
+        x: 1424
+        y: 512
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_11
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 0
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CatRunProfilBlueShort_12
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 0
+        width: 356
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
